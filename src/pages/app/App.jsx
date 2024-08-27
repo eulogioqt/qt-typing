@@ -102,12 +102,22 @@ const App = () => {
 
     return (
         <div className="container d-flex flex-column align-items-center mt-5">
-            <h1 className="text-center" style={{ fontSize: "4rem", fontWeight: "900", lineHeight: "1" }}>
-                QT Typing
-            </h1>
-            <h2 className="text-center mt-3" style={{ fontSize: "2rem", fontWeight: "500", lineHeight: "1" }}>
-                Prueba de mecanografía
-            </h2>
+            <div className='d-sm-block d-none'>
+                <h1 className="text-center" style={{ fontSize: "4rem", fontWeight: "900", lineHeight: "1" }}>
+                    QT Typing
+                </h1>
+                <h2 className="text-center mt-3" style={{ fontSize: "2rem", fontWeight: "500", lineHeight: "1" }}>
+                    Prueba de mecanografía
+                </h2>
+            </div>
+            <div className='d-sm-none d-block'>
+                <h1 className="text-center" style={{ fontSize: "2rem", fontWeight: "900", lineHeight: "1" }}>
+                    QT Typing
+                </h1>
+                <h2 className="text-center mt-3" style={{ fontSize: "1.5rem", fontWeight: "500", lineHeight: "1" }}>
+                    Prueba de mecanografía
+                </h2>
+            </div>
 
             <div className="px-2 col-lg-9 col-12 border border-dark rounded-1 bg-white mb-2 mt-5"
                 style={{ fontSize: "1.5rem", height: "5rem", overflowY: "hidden" }}>
@@ -142,8 +152,11 @@ const App = () => {
                 style={{ display: timer === -2 ? "flex" : "none" }}>
                 <span className='text-center fw-bold'
                     style={{ fontSize: "2.5rem" }}>{Math.round(correctKeys / 5)} PPM</span>
-                <div className='d-flex justify-content-between'>
-                    <span className='fw-bold me-5'>Pulsaciones:</span>
+                <small className='text-center mb-3' style={{ marginTop: "-8px" }}>
+                    (Palabras por minuto)
+                </small>
+                <div className='d-md-flex d-sm-block justify-content-between mb-sm-0 mb-2'>
+                    <span className='fw-bold me-sm-5'>Pulsaciones:</span>
                     <div>
                         <span className='text-success'>{correctKeys}</span>
                         &nbsp;+&nbsp;
@@ -152,17 +165,23 @@ const App = () => {
                         <span>{correctKeys + incorrectKeys}</span>
                     </div>
                 </div>
-                <div className='d-flex justify-content-between'>
-                    <span className='fw-bold me-5'>Precisión:</span>
-                    <span className='fw-bold'>{Math.round(correctKeys / (correctKeys + incorrectKeys) * 10000) / 100}%</span>
+                <div className='d-md-flex d-sm-block justify-content-between mb-sm-0 mb-2'>
+                    <span className='fw-bold me-sm-5'>Precisión:</span>
+                    <div className='fw-bold'>
+                        {Math.round(correctKeys / (correctKeys + incorrectKeys) * 10000) / 100}%
+                    </div>
                 </div>
-                <div className='d-flex justify-content-between'>
-                    <span className='fw-bold me-5'>Palabras correctas:</span>
-                    <span className='text-success fw-bold'>{correctWords}</span>
+                <div className='d-md-flex d-sm-block justify-content-between mb-sm-0 mb-2'>
+                    <span className='fw-bold me-sm-5'>Palabras correctas:</span>
+                    <div className='text-success fw-bold'>
+                        {correctWords}
+                    </div>
                 </div>
-                <div className='d-flex justify-content-between'>
-                    <span className='fw-bold me-5'>Palabras falladas:</span>
-                    <span className='text-danger fw-bold'>{incorrectWords}</span>
+                <div className='d-md-flex d-sm-block justify-content-between'>
+                    <span className='fw-bold me-sm-5'>Palabras falladas:</span>
+                    <div className='text-danger fw-bold'>
+                        {incorrectWords}
+                    </div>
                 </div>
             </div>
         </div >
