@@ -2,15 +2,16 @@ import React, { useEffect, useState } from 'react';
 import WordsES from "../../data/WordsES.json";
 import "../../css/app.css";
 
+const generateRandomWord = () => WordsES[Math.floor(Math.random() * WordsES.length)];
 const generateWords = () => {
     const list = [];
-    for (let i = 0; i < 100; i++) {
-        list.push(WordsES[Math.floor(Math.random() * WordsES.length)]);
-    }
+    for (let i = 0; i < 100; i++)
+        list.push(generateRandomWord());
+
     return list;
 }
 
-const DURATION = 5; // seconds
+const DURATION = 60; // seconds
 
 const App = () => {
     const [tick, setTick] = useState(0);
@@ -33,9 +34,24 @@ const App = () => {
         if (timer >= 0 && timer - Date.now() <= 0) {
             setTimer(-2);
             setInputText("");
-            console.log(writtenWords);
         }
     }, [tick]);
+
+    useEffect(() => {
+        const selectedWordY = document.getElementById("word-" + writtenWords.length).getBoundingClientRect().y;
+        for (let i = 0; i < writtenWords.length; i++) {
+            const word = document.getElementById("word-" + i);
+            if (word.getBoundingClientRect().y < selectedWordY)
+                word.style.display = "none";
+        }
+
+        // cuando se completa una palabra se genera otra
+        setWordList(wordList => {
+            const newWordList = [...wordList];
+            newWordList.push(generateRandomWord());
+            return newWordList;
+        });
+    }, [writtenWords]);
 
     const reload = () => {
         setWordList(generateWords());
@@ -53,15 +69,13 @@ const App = () => {
             if (e.target.value.substring(inputText.length) === " ") {
                 setWrittenWords(writtenlist => {
                     const newWrittenList = [...writtenlist];
-                    newWrittenList.push(wordList[writtenlist.length] === inputText)
+                    newWrittenList.push(wordList[writtenlist.length] === inputText);
                     return newWrittenList;
                 });
 
                 setInputText("");
             } else setInputText(e.target.value);
         }
-
-
     }
 
     const getTimerDisplay = () => {
@@ -71,6 +85,20 @@ const App = () => {
 
         return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
     }
+
+    const correctKeys = wordList
+        .map((word, index) => writtenWords[index] ? word.length + 1 : 0)
+        .reduce((acc, cur) => acc + cur);
+    const incorrectKeys = wordList
+        .map((word, index) => writtenWords[index] === false ? word.length + 1 : 0)
+        .reduce((acc, cur) => acc + cur);
+
+    const correctWords = wordList
+        .map((_, index) => writtenWords[index] ? 1 : 0)
+        .reduce((acc, cur) => acc + cur);
+    const incorrectWords = wordList
+        .map((_, index) => writtenWords[index] === false ? 1 : 0)
+        .reduce((acc, cur) => acc + cur);
 
     return (
         <div className="container d-flex flex-column align-items-center mt-5">
@@ -82,12 +110,13 @@ const App = () => {
             </h2>
 
             <div className="px-2 col-lg-9 col-12 border border-dark rounded-1 bg-white mb-2 mt-5"
-                style={{ fontSize: "1.5rem", height: "7rem", overflowY: "hidden" }}>
+                style={{ fontSize: "1.5rem", height: "5rem", overflowY: "hidden" }}>
                 {wordList.map((word, index) =>
-                    <span className={(writtenWords.length === index ? "px-1 bg-secondary-subtle " : "px-1 ") +
+                    <span key={index} id={"word-" + index} className={(writtenWords.length === index ? "px-1 bg-secondary-subtle " : "px-1 ") +
                         (writtenWords[index] ? "text-success" :
                             (writtenWords[index] === false
-                                ? "text-danger" : "text-dark"))} style={{ display: 'inline-block' }}>{word}</span>
+                                ? "text-danger" : "text-dark"))}
+                        style={{ display: 'inline-block' }}>{word}</span>
                 )}
             </div>
             <div className="d-flex px-1 col-lg-9 col-12 border border-dark rounded-1 align-items-center justify-content-center py-1"
@@ -108,7 +137,35 @@ const App = () => {
                     ⟳
                 </button>
             </div>
-        </div>
+
+            <div className='flex-column mt-4 px-5 py-3 bg-white rounded-3 border border-dark'
+                style={{ display: timer === -2 ? "flex" : "none" }}>
+                <span className='text-center fw-bold'
+                    style={{ fontSize: "2.5rem" }}>{Math.round(correctKeys / 5)} PPM</span>
+                <div className='d-flex justify-content-between'>
+                    <span className='fw-bold me-5'>Pulsaciones:</span>
+                    <div>
+                        <span className='text-success'>{correctKeys}</span>
+                        &nbsp;+&nbsp;
+                        <span className='text-danger'>{incorrectKeys}</span>
+                        &nbsp;=&nbsp;
+                        <span>{correctKeys + incorrectKeys}</span>
+                    </div>
+                </div>
+                <div className='d-flex justify-content-between'>
+                    <span className='fw-bold me-5'>Precisión:</span>
+                    <span className='fw-bold'>{Math.round(correctKeys / (correctKeys + incorrectKeys) * 10000) / 100}%</span>
+                </div>
+                <div className='d-flex justify-content-between'>
+                    <span className='fw-bold me-5'>Palabras correctas:</span>
+                    <span className='text-success fw-bold'>{correctWords}</span>
+                </div>
+                <div className='d-flex justify-content-between'>
+                    <span className='fw-bold me-5'>Palabras falladas:</span>
+                    <span className='text-danger fw-bold'>{incorrectWords}</span>
+                </div>
+            </div>
+        </div >
     );
 }
 
