@@ -128,8 +128,8 @@ const App = () => {
                 </h2>
             </div>
 
-            <div className="px-2 col-lg-9 col-12 border border-dark rounded-1 bg-white mb-2 mt-5"
-                style={{ fontSize: "1.5rem", height: "5rem", overflowY: "hidden" }}>
+            <div className="p-2 col-lg-9 col-12 border border-dark rounded-1 bg-white mb-2 mt-5"
+                style={{ fontSize: "1.5rem", height: "5.5rem", overflowY: "hidden" }}>
                 {wordList.map((word, index) =>
                     <span key={index} id={"word-" + index} className={(writtenWords.length === index ? "px-1 bg-secondary-subtle " : "px-1 ") +
                         (writtenWords[index] ? "text-success" :
