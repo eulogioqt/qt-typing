@@ -34,15 +34,21 @@ const App = () => {
         if (timer >= 0 && timer - Date.now() <= 0) {
             setTimer(-2);
             setInputText("");
+
+            console.log("Promedio de caracteres por palabra: " + wordList
+                .map((word, index) => writtenWords[index] !== undefined ? word.length : 0)
+                .reduce((acc, cur) => acc + cur) / writtenWords.length);
         }
     }, [tick]);
 
     useEffect(() => {
-        const selectedWordY = document.getElementById("word-" + writtenWords.length).getBoundingClientRect().y;
-        for (let i = 0; i < writtenWords.length; i++) {
-            const word = document.getElementById("word-" + i);
-            if (word.getBoundingClientRect().y < selectedWordY)
-                word.style.display = "none";
+        if (writtenWords.length > 0) {
+            const selectedWordY = document.getElementById("word-" + writtenWords.length).getBoundingClientRect().y;
+            for (let i = 0; i < writtenWords.length; i++) {
+                const word = document.getElementById("word-" + i);
+                if (word.getBoundingClientRect().y < selectedWordY)
+                    word.style.display = "none";
+            }
         }
 
         // cuando se completa una palabra se genera otra
@@ -54,6 +60,9 @@ const App = () => {
     }, [writtenWords]);
 
     const reload = () => {
+        for (let i = 0; i < writtenWords.length; i++)
+            document.getElementById("word-" + i).style.display = "inline-block";
+
         setWordList(generateWords());
         setWrittenWords([]);
         setTimer(-1);
@@ -167,7 +176,7 @@ const App = () => {
                 </div>
                 <div className='d-md-flex d-sm-block justify-content-between mb-sm-0 mb-2'>
                     <span className='fw-bold me-sm-5'>Precisión:</span>
-                    <div className='fw-bold'>
+                    <div className='fw-bold'> {/* asi no se mide, hay que sumar las pulsaciones completas las que se borran y todo*/}
                         {Math.round(correctKeys / (correctKeys + incorrectKeys) * 10000) / 100}%
                     </div>
                 </div>
