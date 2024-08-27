@@ -1,3 +1,3 @@
 # QT Typing
 
-Test your Typing Skills Online!
+Test your typing skill and discover your speed in words per minute.
