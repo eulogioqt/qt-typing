@@ -1,42 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import WordsES from "../../data/WordsES.json";
+
+import ResultSummary from './components/ResultSummary';
+import WordsDisplay from './components/WordsDisplay';
+
+import { useWords } from '../../hooks/useWords';
+import { getWordLength } from '../../utils/Utils';
+import { useIsLarge } from '../../hooks/useIsLarge';
+
 import "../../css/app.css";
 
-const generateRandomWord = () => WordsES[Math.floor(Math.random() * WordsES.length)];
-const generateWords = () => {
-    const list = [];
-    for (let i = 0; i < 100; i++)
-        list.push(generateRandomWord());
-
-    return list;
-}
-
-const getWordLength = (word) => {
-    const specialCharacters = {
-        'á': ['´', 'a'],
-        'é': ['´', 'e'],
-        'í': ['´', 'i'],
-        'ó': ['´', 'o'],
-        'ú': ['´', 'u'],
-        'ü': ['^', '¨', 'u'],
-    };
-
-    let keystrokes = [];
-
-    for (let char of word) {
-        if (specialCharacters[char]) {
-            keystrokes.push(...specialCharacters[char]);
-        } else {
-            keystrokes.push(char);
-        }
-    }
-
-    return keystrokes.length;
-}
-
-const DURATION = 60; // seconds
+const DURATION = 5; // seconds
 
 const App = () => {
+    const { generateRandomWord, generateWords } = useWords(WordsES);
+    const isLarge = useIsLarge();
+
     const [tick, setTick] = useState(0);
 
     const [wordList, setWordList] = useState(generateWords());
@@ -168,90 +147,33 @@ const App = () => {
 
     return (
         <div className="container d-flex flex-column align-items-center mt-5">
-            <div className='d-sm-block d-none'>
-                <h1 className="text-center" style={{ fontSize: "4rem", fontWeight: "900", lineHeight: "1" }}>
-                    QT Typing
-                </h1>
-                <h2 className="text-center mt-3" style={{ fontSize: "2rem", fontWeight: "500", lineHeight: "1" }}>
-                    Prueba de mecanografía
-                </h2>
-            </div>
-            <div className='d-sm-none d-block'>
-                <h1 className="text-center" style={{ fontSize: "2rem", fontWeight: "900", lineHeight: "1" }}>
-                    QT Typing
-                </h1>
-                <h2 className="text-center mt-3" style={{ fontSize: "1.5rem", fontWeight: "500", lineHeight: "1" }}>
-                    Prueba de mecanografía
-                </h2>
-            </div>
+            <h1 className="text-center"
+                style={{ fontSize: isLarge ? "4rem" : "2rem", fontWeight: "900", lineHeight: "1" }}>
+                QT Typing
+            </h1>
+            <h2 className="text-center mt-3"
+                style={{ fontSize: isLarge ? "2rem" : "1.5rem", fontWeight: "500", lineHeight: "1" }}>
+                Prueba de mecanografía
+            </h2>
 
-            <div className="p-2 col-lg-9 col-12 border border-dark rounded-1 bg-white mb-2 mt-5"
-                style={{ fontSize: "1.5rem", height: "5.5rem", overflowY: "hidden" }}>
-                {wordList.map((word, index) =>
-                    <span key={index} id={"word-" + index}
-                        className={(writtenWords.length === index ? "no-select px-1 " + (wordList[index].startsWith(inputText) ? "bg-secondary-subtle" : "bg-danger") + " " : "no-select px-1 ") +
-                            (writtenWords[index] ? "text-success" :
-                                (writtenWords[index] === false
-                                    ? "text-danger" : "text-dark"))}
-                        style={{ display: 'inline-block' }}>{word}</span>
-                )}
-            </div>
-            <div className="d-flex px-1 col-lg-9 col-12 border border-dark rounded-1 align-items-center justify-content-center py-1"
-                style={{ backgroundColor: "rgba(1,1,1,0.25)" }}>
-                <input
-                    className="p-1 rounded-2 w-100"
-                    style={{ fontSize: "1.5rem", maxWidth: "500px" }}
-                    value={inputText}
-                    onChange={onInputChange}
-                    onPaste={(e) => console.log("paste")}
-                    spellCheck={false}
-                />
-                <span className="ms-2 bg-dark text-white p-2 rounded-2"
-                    style={{ fontSize: "1.5rem" }}>
-                    {timer === -1 ? "1:00" : (timer === -2 ? "0:00" : getTimerDisplay())}
-                </span>
-                <button className="ms-2 btn btn-primary" onClick={reload}
-                    style={{ fontSize: "1.5rem" }}>
-                    ⟳
-                </button>
-            </div>
+            <WordsDisplay
+                writtenWords={writtenWords}
+                wordList={wordList}
+                inputText={inputText}
+                onInputChange={onInputChange}
+                reload={reload}
+                getTimerDisplay={getTimerDisplay}
+                timer={timer}
+            />
 
-            <div className='flex-column mt-4 px-5 py-3 bg-white rounded-3 border border-dark'
-                style={{ display: timer === -2 ? "flex" : "none" }}>
-                <span className='text-center fw-bold'
-                    style={{ fontSize: "2.5rem" }}>{Math.round(correctKeys / 5)} PPM</span>
-                <small className='text-center mb-3' style={{ marginTop: "-8px" }}>
-                    (Palabras por minuto)
-                </small>
-                <div className='d-md-flex d-sm-block justify-content-between mb-sm-0 mb-2'>
-                    <span className='fw-bold me-sm-5'>Pulsaciones:</span>
-                    <div>
-                        <span className='text-success'>{correctKeys}</span>
-                        &nbsp;+&nbsp;
-                        <span className='text-danger'>{incorrectKeys}</span>
-                        &nbsp;=&nbsp;
-                        <span>{correctKeys + incorrectKeys}</span>
-                    </div>
-                </div>
-                <div className='d-md-flex d-sm-block justify-content-between mb-sm-0 mb-2'>
-                    <span className='fw-bold me-sm-5'>Precisión:</span>
-                    <div className='fw-bold'> {/* asi no se mide, hay que sumar las pulsaciones completas las que se borran y todo*/}
-                        {Math.round(accuracy.correct / (accuracy.correct + accuracy.wrong) * 10000) / 100}%
-                    </div>
-                </div>
-                <div className='d-md-flex d-sm-block justify-content-between mb-sm-0 mb-2'>
-                    <span className='fw-bold me-sm-5'>Palabras correctas:</span>
-                    <div className='text-success fw-bold'>
-                        {correctWords}
-                    </div>
-                </div>
-                <div className='d-md-flex d-sm-block justify-content-between'>
-                    <span className='fw-bold me-sm-5'>Palabras falladas:</span>
-                    <div className='text-danger fw-bold'>
-                        {incorrectWords}
-                    </div>
-                </div>
-            </div>
+            <ResultSummary
+                timer={timer}
+                correctKeys={correctKeys}
+                incorrectKeys={incorrectKeys}
+                accuracy={accuracy}
+                correctWords={correctWords}
+                incorrectWords={incorrectWords}
+            />
         </div >
     );
 }
