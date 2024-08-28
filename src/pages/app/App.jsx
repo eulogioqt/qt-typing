@@ -71,19 +71,30 @@ const App = () => {
     }
 
     const onInputChange = (e) => {
-        if (timer === -1) {
+        const newValue = e.target.value;
+
+        if (newValue.trim().length === 0) { // Si lo nuevo esta vacio, simplemente lo dejamos vacio pero no procesamos
+            setInputText("");
+            return;
+        }
+
+        if (timer === -1) { // Iniciar timer
             setTimer(Date.now() + DURATION * 1000);
             setInputText(e.target.value);
-        } else if (timer !== -2) {
-            if (e.target.value.substring(inputText.length) === " ") {
+        } else if (timer !== -2) { // Si no ha terminado
+            if (newValue.includes(" ")) {
+                const split = newValue.split(" ");
+                const submittedWord = split[0].trim();
+                const restText = split[1].trim(); // En moviles el corrector escribe varias a la vez
+
                 setWrittenWords(writtenlist => {
                     const newWrittenList = [...writtenlist];
-                    newWrittenList.push(wordList[writtenlist.length] === inputText);
+                    newWrittenList.push(wordList[writtenlist.length] === submittedWord);
                     return newWrittenList;
                 });
 
-                setInputText("");
-            } else setInputText(e.target.value);
+                setInputText(restText);
+            } else setInputText(newValue);
         }
     }
 
@@ -145,6 +156,7 @@ const App = () => {
                     style={{ fontSize: "1.5rem", maxWidth: "500px" }}
                     value={inputText}
                     onChange={onInputChange}
+                    onPaste={(e) => console.log("paste")}
                     spellCheck={false}
                 />
                 <span className="ms-2 bg-dark text-white p-2 rounded-2"
