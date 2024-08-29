@@ -14,7 +14,7 @@ const TypeTestContext = createContext();
 export const TypeTestProvider = ({ children }) => {
     const { generateRandomWord, generateWords } = useWords(WordES);
 
-    const [duration, setDuration] = useState(10);
+    const [duration, setDuration] = useState(5);
 
     const [timeLeft, setTimeLeft] = useState(undefined); // Necesario para los renderizados
     const [endTime, setEndTime] = useState(undefined);
@@ -57,8 +57,9 @@ export const TypeTestProvider = ({ children }) => {
     }
 
     const onFinish = () => {
-        setInputText("");
+        setTestState(TEST_STATES.FINISHED);
 
+        setInputText("");
         setWrittenWords(writtenList => {
             console.log("Promedio de caracteres por palabra: " + wordList
                 .map((word, index) => writtenList[index] !== undefined ? getWordLength(word) + 1 : 0)
@@ -69,6 +70,8 @@ export const TypeTestProvider = ({ children }) => {
     };
 
     const onStart = () => {
+        setTestState(TEST_STATES.RUNNING);
+
         setTimeLeft(duration);
         setEndTime(Date.now() + duration * 1000);
     }
@@ -91,7 +94,6 @@ export const TypeTestProvider = ({ children }) => {
     useEffect(() => {
         setWpm((keyStrokes[0] / 5) * (60 / (duration - (endTime - Date.now()) / 1000)));
     }, [writtenWords]);*/
-
 
     return (
         <TypeTestContext.Provider

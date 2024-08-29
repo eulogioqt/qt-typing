@@ -3,17 +3,20 @@ import React from "react";
 import { useTypeTest } from "../../../contexts/TypeTestContext";
 
 const WordItem = ({ word, index }) => {
-    const { writtenWords, wordList, inputText } = useTypeTest();
+    const { writtenWords, inputText } = useTypeTest();
 
-    const textColor = (writtenWords[index] ? "text-success" : (writtenWords[index] === false ? "text-danger" : "text-dark"));
-    const bgColor = (writtenWords.length === index ? (wordList[index].startsWith(inputText) ? "bg-secondary-subtle" : "bg-danger") : "");
+    const text = () => {
+        if (writtenWords[index] === undefined) return "text-dark";
+        return writtenWords[index] ? "text-success" : "text-danger";
+    };
+
+    const bg = () => {
+        if (writtenWords.length !== index) return "";
+        return word.startsWith(inputText) ? "bg-secondary-subtle" : "bg-danger";
+    };
 
     return (
-        <span
-            id={"word-" + index}
-            className={`no-select px-1 ${textColor} ${bgColor}`}
-            style={{ display: 'inline-block' }}
-        >
+        <span id={`word-${index}`} className={`no-select px-1 ${text()} ${bg()}`} style={{ display: 'inline-block' }}>
             {word}
         </span>
     );
