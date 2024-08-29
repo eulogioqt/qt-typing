@@ -1,6 +1,8 @@
-body {
+body,
+html {
     font-family: 'DM Sans', sans-serif;
-    background-color: rgb(172, 227, 255);
+    background: rgb(172, 227, 255);
+    background: linear-gradient(90deg, #b8f9ff 0%, #6eb4ff 100%);
 }
 
 .no-select {

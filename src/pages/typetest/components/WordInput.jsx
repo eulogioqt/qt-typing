@@ -63,8 +63,8 @@ const WordInput = () => {
 
     return (
         <input
-            className="p-1 rounded-2 w-100"
-            style={{ fontSize: "1.5rem", maxWidth: "500px" }}
+            className="p-1 rounded-3 w-100 border border-black"
+            style={{ fontSize: "1.5rem", maxWidth: "500px", height: "2.25em" }}
             value={inputText}
             onChange={onInputChange}
             spellCheck={false}

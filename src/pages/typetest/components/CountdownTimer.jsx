@@ -37,8 +37,9 @@ const CountdownTimer = () => {
 	};
 
 	return (
-		<span className="ms-2 bg-dark text-white p-2 rounded-2" style={{ fontSize: "1.5rem" }}>
-			{formatTime(TIME_DISPLAY[testState])}
+		<span className="ms-2 text-white p-2 rounded-3 border border-black"
+			style={{ fontSize: "1.5rem", backgroundColor: "#444444", height: "2.25em" }}>
+			<span style={{ fontFamily: "monospace" }}>{formatTime(TIME_DISPLAY[testState])}</span>
 		</span>
 	);
 };
