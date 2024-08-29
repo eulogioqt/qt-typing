@@ -1,6 +1,10 @@
 import React from "react";
 
-const WordItem = ({ word, index, writtenWords, wordList, inputText }) => {
+import { useTypeTest } from "../../../contexts/TypeTestContext";
+
+const WordItem = ({ word, index }) => {
+    const { writtenWords, wordList, inputText } = useTypeTest();
+
     const textColor = (writtenWords[index] ? "text-success" : (writtenWords[index] === false ? "text-danger" : "text-dark"));
     const bgColor = (writtenWords.length === index ? (wordList[index].startsWith(inputText) ? "bg-secondary-subtle" : "bg-danger") : "");
 

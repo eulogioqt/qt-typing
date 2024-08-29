@@ -1,7 +1,14 @@
-const ResultSummary = ({ timer, correctKeys, incorrectKeys, accuracy, correctWords, incorrectWords }) => {
+import React from "react";
+
+import { TEST_STATES, useTypeTest } from "../../../contexts/TypeTestContext";
+
+const ResultSummary = () => {
+    const { testState, accuracy, keyStrokes } = useTypeTest();
+    const [correctKeys, incorrectKeys, correctWords, incorrectWords] = keyStrokes;
+
     return (
         <div className='flex-column mt-4 px-5 py-3 bg-white rounded-3 border border-dark'
-            style={{ display: timer === -2 ? "flex" : "none" }}>
+            style={{ display: testState === TEST_STATES.FINISHED ? "flex" : "none" }}>
             <span className='text-center fw-bold'
                 style={{ fontSize: "2.5rem" }}>{Math.round(correctKeys / 5)} PPM</span>
             <small className='text-center mb-3' style={{ marginTop: "-8px" }}>
