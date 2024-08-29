@@ -3,7 +3,7 @@ import React from "react";
 import { TypeTestProvider } from "../../contexts/TypeTestContext";
 import TypeTestPage from "../typetest/TypeTestPage";
 
-import "../../css/app.css";
+import "./css/app.css";
 
 const App = () => {
     return (
