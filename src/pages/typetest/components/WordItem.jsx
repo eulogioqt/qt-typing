@@ -16,7 +16,7 @@ const WordItem = ({ word, index }) => {
     };
 
     return (
-        <span id={`word-${index}`} className={`no-select px-1 ${text()} ${bg()}`} style={{ display: 'inline-block' }}>
+        <span nword={index} className={`no-select px-1 ${text()} ${bg()}`} style={{ display: 'inline-block' }}>
             {word}
         </span>
     );

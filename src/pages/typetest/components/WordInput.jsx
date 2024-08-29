@@ -17,11 +17,9 @@ const WordInput = () => {
                 onStart();
 
             if (testState !== TEST_STATES.FINISHED) {  // Si el test no ha terminado, procesar el input
-                const { correct, wrong, updatedWrittenWords, updatedInputText } = processInput(newValue);
+                const { correct, wrong, updatedInputText } = processInput(newValue);
 
-                setWrittenWords(updatedWrittenWords);
                 setInputText(updatedInputText);
-
                 setAccuracy(oldAccuracy => ({
                     correct: oldAccuracy.correct + correct,
                     wrong: oldAccuracy.wrong + wrong
@@ -32,7 +30,6 @@ const WordInput = () => {
 
     const processInput = (newValue) => {
         let correct = 0, wrong = 0;
-        let updatedWrittenWords = [...writtenWords];
         let updatedInputText = newValue;
 
         let keystrokesValue, condition;
@@ -43,7 +40,12 @@ const WordInput = () => {
             keystrokesValue = getWordLength(diff) + 1;
             condition = wordList[writtenWords.length] === submittedWord;
 
-            updatedWrittenWords.push(wordList[updatedWrittenWords.length] === submittedWord);
+            setWrittenWords(writtenList => {
+                const updatedWrittenWords = [...writtenList];
+                updatedWrittenWords.push(wordList[updatedWrittenWords.length] === submittedWord);
+                return updatedWrittenWords;
+            });
+
             updatedInputText = restText;
         } else {
             const diff = newValue.substring(inputText.length);
@@ -55,7 +57,7 @@ const WordInput = () => {
 
         [correct, wrong] = [condition ? keystrokesValue : 0, condition ? 0 : keystrokesValue]
 
-        return { correct, wrong, updatedWrittenWords, updatedInputText };
+        return { correct, wrong, updatedInputText };
     };
 
 

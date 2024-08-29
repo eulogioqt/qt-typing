@@ -15,7 +15,8 @@ const CountdownTimer = () => {
 
 				if (remainingTime <= 0) {
 					clearInterval(interval);
-					onFinish();
+
+					onFinish(); // cuidado closure
 				}
 			}, 100); // Cada 100ms para mayor precisión
 		}

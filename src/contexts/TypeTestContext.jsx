@@ -14,39 +14,50 @@ const TypeTestContext = createContext();
 export const TypeTestProvider = ({ children }) => {
     const { generateRandomWord, generateWords } = useWords(WordES);
 
-    const [duration, setDuration] = useState(5);
+    // settings
+    const [duration, setDuration] = useState(10);
 
+    // timer
     const [timeLeft, setTimeLeft] = useState(undefined); // Necesario para los renderizados
     const [endTime, setEndTime] = useState(undefined);
 
+    // data
     const [wordList, setWordList] = useState(generateWords());
     const [writtenWords, setWrittenWords] = useState([]);
     const [accuracy, setAccuracy] = useState({ correct: 0, wrong: 0 });
     const [testState, setTestState] = useState(TEST_STATES.NOT_STARTED);
-
     const [inputText, setInputText] = useState("");
+
+    const calcKeyStrokes = () => wordList.reduce(
+        ([ck, ik, cw, iw], word, index) => {
+            const isCorrect = writtenWords[index];
+            const wordLength = getWordLength(word) + 1;
+
+            return [
+                ck + (isCorrect ? wordLength : 0),
+                ik + (isCorrect === false ? wordLength : 0),
+                cw + (isCorrect ? 1 : 0),
+                iw + (isCorrect === false ? 1 : 0)
+            ];
+        }, [0, 0, 0, 0]
+    );
 
     useEffect(() => {
         if (writtenWords.length > 0) {
-            const selectedWordY = document.getElementById("word-" + writtenWords.length).getBoundingClientRect().y;
-            for (let i = 0; i < writtenWords.length; i++) {
-                const word = document.getElementById("word-" + i);
-                if (word.getBoundingClientRect().y < selectedWordY)
-                    word.style.display = "none";
-            }
+            const selectedWordY = document.querySelector(`[nword="${writtenWords.length}"]`).getBoundingClientRect().y;
+
+            writtenWords.forEach((_, i) => {
+                const wordElement = document.querySelector(`[nword="${i}"]`);
+                if (wordElement && wordElement.getBoundingClientRect().y < selectedWordY)
+                    wordElement.style.display = "none";
+            });
         }
 
-        // cuando se completa una palabra se genera otra
-        setWordList(wordList => {
-            const newWordList = [...wordList];
-            newWordList.push(generateRandomWord());
-            return newWordList;
-        });
+        setWordList(wordList => [...wordList, generateRandomWord()]);
     }, [writtenWords]);
 
     const onReload = () => {
-        for (let i = 0; i < writtenWords.length; i++)
-            document.getElementById("word-" + i).style.display = "inline-block";
+        [...document.querySelectorAll('[nword]')].map(word => word.style.display = "inline-block")
 
         setWordList(generateWords());
         setWrittenWords([]);
@@ -60,13 +71,9 @@ export const TypeTestProvider = ({ children }) => {
         setTestState(TEST_STATES.FINISHED);
 
         setInputText("");
-        setWrittenWords(writtenList => {
-            console.log("Promedio de caracteres por palabra: " + wordList
-                .map((word, index) => writtenList[index] !== undefined ? getWordLength(word) + 1 : 0)
-                .reduce((acc, cur) => acc + cur) / writtenList.length);
-
-            return writtenList;
-        })
+        console.log("Promedio de caracteres por palabra: " + wordList
+            .map((word, index) => writtenWords[index] !== undefined ? getWordLength(word) + 1 : 0)
+            .reduce((acc, cur) => acc + cur) / writtenWords.length);
     };
 
     const onStart = () => {
@@ -75,20 +82,6 @@ export const TypeTestProvider = ({ children }) => {
         setTimeLeft(duration);
         setEndTime(Date.now() + duration * 1000);
     }
-
-    const keyStrokes = wordList.reduce(
-        ([ck, ik, cw, iw], word, index) => {
-            const isCorrect = writtenWords[index];
-            const wordLength = getWordLength(word) + 1;
-
-            return [
-                ck + (isCorrect ? wordLength : 0),
-                ik + (!isCorrect && isCorrect !== undefined ? wordLength : 0),
-                cw + (isCorrect ? 1 : 0),
-                iw + (!isCorrect && isCorrect !== undefined ? 1 : 0)
-            ];
-        }, [0, 0, 0, 0]
-    );
 
     /*const [wpm, setWpm] = useState(0); CON ESTO SE PUEDE HACER UN GRAFICO DE WPM ETC, GUARDAR MARCA Y TIEMPO
     useEffect(() => {
@@ -114,7 +107,7 @@ export const TypeTestProvider = ({ children }) => {
                 setTestState,
                 inputText,
                 setInputText,
-                keyStrokes,
+                calcKeyStrokes,
 
                 onFinish,
                 onStart,

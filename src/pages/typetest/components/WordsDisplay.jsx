@@ -14,9 +14,7 @@ const WordsDisplay = () => {
         <>
             <div className="p-2 col-lg-9 col-12 border border-dark rounded-1 bg-white mb-2 mt-5"
                 style={{ fontSize: "1.5rem", height: "5.5rem", overflowY: "hidden" }}>
-                {wordList.map((word, index) => (
-                    <WordItem key={index} index={index} word={word} />
-                ))}
+                {wordList.map((word, index) => <WordItem key={index} index={index} word={word} />)}
             </div>
 
             <div className="d-flex px-1 col-lg-9 col-12 border border-dark rounded-1 py-1"
