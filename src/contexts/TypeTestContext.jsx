@@ -15,7 +15,7 @@ export const TypeTestProvider = ({ children }) => {
     const { generateRandomWord, generateWords } = useWords(WordES);
 
     // settings
-    const [duration, setDuration] = useState(10);
+    const [duration, setDuration] = useState(60);
 
     // timer
     const [timeLeft, setTimeLeft] = useState(undefined); // Necesario para los renderizados
