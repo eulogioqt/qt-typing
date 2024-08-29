@@ -29,7 +29,7 @@ const WordsDisplay = () => {
                 </div>
             </div>
 
-            <div className="d-flex px-1 col-lg-9 col-12 border border-dark rounded-3 py-1"
+            <div className="d-flex px-1 col-lg-9 col-12 border border-dark rounded-3 py-2"
                 style={{ backgroundColor: "rgba(1,1,1,0.25)", alignItems: "center", justifyContent: "center" }}>
                 <WordInput />
                 <CountdownTimer />
