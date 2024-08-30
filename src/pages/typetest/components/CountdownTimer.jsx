@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 
 import { TEST_STATES, useTypeTest } from '../../../contexts/TypeTestContext';
+import { useIsLarge } from '../../../hooks/useIsLarge';
 
 const CountdownTimer = () => {
 	const { testState, duration, setTimeLeft, timeLeft, endTime, onFinish } = useTypeTest();
+	const isLarge = useIsLarge();
 
 	useEffect(() => {
 		let interval;
@@ -38,7 +40,7 @@ const CountdownTimer = () => {
 
 	return (
 		<span className="ms-2 text-white p-2 rounded-3 border border-black"
-			style={{ fontSize: "1.5rem", backgroundColor: "#444444", height: "2.25em" }}>
+			style={{ fontSize: isLarge ? "1.5rem" : "1.25rem", backgroundColor: "#444444", height: "2.25em" }}>
 			<span style={{ fontFamily: "monospace" }}>{formatTime(TIME_DISPLAY[testState])}</span>
 		</span>
 	);

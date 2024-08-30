@@ -1,6 +1,6 @@
 body,
 html {
-    font-family: 'DM Sans', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     background: rgb(172, 227, 255);
     background: linear-gradient(90deg, #b8f9ff 0%, #6eb4ff 100%);
 }
