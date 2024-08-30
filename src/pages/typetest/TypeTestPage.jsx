@@ -1,12 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import ResultSummary from './components/ResultSummary';
 import WordsDisplay from './components/WordsDisplay';
 
 import { useIsLarge } from '../../hooks/useIsLarge';
+import { useTypeTest } from '../../contexts/TypeTestContext';
 
 const TypeTestPage = () => {
+    const { onReload } = useTypeTest();
     const isLarge = useIsLarge();
+
+    useEffect(() => {
+        const reloadF5 = (event) => {
+            if (event.key === 'F5') {
+                event.preventDefault();
+                onReload();
+            }
+        }
+
+        window.addEventListener('keydown', reloadF5);
+        return () => window.removeEventListener('keydown', reloadF5);
+    }, []);
+
 
     return (
         <div className="container d-flex flex-column align-items-center mt-5">
