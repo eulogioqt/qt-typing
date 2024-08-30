@@ -21,6 +21,10 @@ html {
                                   supported by Chrome and Opera */
 }
 
+.no-pointer {
+    cursor: auto;
+}
+
 .black-color {
     background-color: #444444;
 }

@@ -12,11 +12,8 @@ export const TEST_STATES = {
 
 const TypeTestContext = createContext();
 export const TypeTestProvider = ({ children }) => {
-    const { testLang } = useSettings();
+    const { testLang, duration } = useSettings();
     const { generateRandomWord, generateWords } = useWords(testLang);
-
-    // settings
-    const [duration, setDuration] = useState(5);
 
     // timer
     const [timeLeft, setTimeLeft] = useState(undefined); // Necesario para los renderizados
@@ -57,6 +54,22 @@ export const TypeTestProvider = ({ children }) => {
         setWordList(wordList => [...wordList, generateRandomWord()]);
     }, [writtenWords]);
 
+    const [firstRender, setFirstRender] = useState(true);
+    useEffect(() => {
+        if (firstRender) setFirstRender(false);
+        else onReload();
+
+        const reloadF5 = (event) => {
+            if (event.key === 'F5') {
+                event.preventDefault();
+                onReload();
+            }
+        }
+
+        window.addEventListener('keydown', reloadF5);
+        return () => window.removeEventListener('keydown', reloadF5);
+    }, [testLang]);
+
     const onReload = () => {
         [...document.querySelectorAll('[nword]')].map(word => word.style.display = "inline-block")
 
@@ -92,8 +105,6 @@ export const TypeTestProvider = ({ children }) => {
     return (
         <TypeTestContext.Provider
             value={{
-                duration,
-                setDuration,
                 timeLeft,
                 setTimeLeft,
                 endTime,

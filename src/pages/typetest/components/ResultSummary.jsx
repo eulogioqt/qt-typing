@@ -3,9 +3,11 @@ import React from "react";
 import ResultItem from "./ResultItem";
 
 import { TEST_STATES, useTypeTest } from "../../../contexts/TypeTestContext";
+import { useSettings } from "../../../contexts/SettingsContext";
 
 const ResultSummary = () => {
-    const { duration, testState, accuracy, calcKeyStrokes } = useTypeTest();
+    const { duration } = useSettings();
+    const { testState, accuracy, calcKeyStrokes } = useTypeTest();
     const [correctKeys, incorrectKeys, correctWords, incorrectWords] = calcKeyStrokes();
 
     const wpmCalc = Math.round((correctKeys / 5) * 60 / duration);

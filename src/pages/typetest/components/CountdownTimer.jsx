@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 
 import { TEST_STATES, useTypeTest } from '../../../contexts/TypeTestContext';
 import { useIsLarge } from '../../../hooks/useIsLarge';
+import { useSettings } from '../../../contexts/SettingsContext';
 
 const CountdownTimer = () => {
-	const { testState, duration, setTimeLeft, timeLeft, endTime, onFinish } = useTypeTest();
+	const { testState, setTimeLeft, timeLeft, endTime, onFinish } = useTypeTest();
+	const { duration, hideTime, setHideTime } = useSettings();
 	const isLarge = useIsLarge();
 
-	const [hideTimer, setHideTimer] = useState(false);
-	const swapHideTimer = () => setHideTimer(value => !value);
+	const swapHideTime = () => setHideTime(value => !value);
 
 	useEffect(() => {
 		let interval;
@@ -42,9 +43,9 @@ const CountdownTimer = () => {
 	};
 
 	return (
-		<button className="btn btn-black ms-2 p-2 rounded-3" onClick={swapHideTimer}
+		<button className="btn btn-black ms-2 p-2 rounded-3" onClick={swapHideTime}
 			style={{ fontSize: isLarge ? "1.5rem" : "1.25rem", height: "2.25em" }}>
-			<span style={{ fontFamily: "monospace", visibility: hideTimer ? "hidden" : "visible" }}>{formatTime(TIME_DISPLAY[testState])}</span>
+			<span style={{ fontFamily: "monospace", visibility: hideTime ? "hidden" : "visible" }}>{formatTime(TIME_DISPLAY[testState])}</span>
 		</button>
 	);
 };
