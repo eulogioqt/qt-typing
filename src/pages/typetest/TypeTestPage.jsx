@@ -5,6 +5,7 @@ import WordsDisplay from './components/WordsDisplay';
 
 import { useIsLarge } from '../../hooks/useIsLarge';
 import TestSettingsMenu from './menus/TestSettingsMenu';
+import ScreenKeyboard from './components/ScreenKeyboard';
 
 const TypeTestPage = () => {
     const isLarge = useIsLarge();
@@ -27,6 +28,7 @@ const TypeTestPage = () => {
 
                 <WordsDisplay openTestSettings={() => setOpenTestSettings(true)} />
 
+                <ScreenKeyboard />
                 <ResultSummary />
             </div >
         </>
