@@ -42,8 +42,8 @@ const CountdownTimer = () => {
 	};
 
 	return (
-		<button className="ms-2 text-white p-2 rounded-3 border border-black btn" onClick={swapHideTimer}
-			style={{ fontSize: isLarge ? "1.5rem" : "1.25rem", height: "2.25em", backgroundColor: "#444444" }}>
+		<button className="btn btn-black ms-2 p-2 rounded-3" onClick={swapHideTimer}
+			style={{ fontSize: isLarge ? "1.5rem" : "1.25rem", height: "2.25em" }}>
 			<span style={{ fontFamily: "monospace", visibility: hideTimer ? "hidden" : "visible" }}>{formatTime(TIME_DISPLAY[testState])}</span>
 		</button>
 	);

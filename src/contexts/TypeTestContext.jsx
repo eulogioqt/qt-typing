@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-import WordES from "../data/WordsES.json";
 import { useWords } from "../hooks/useWords";
 import { getWordLength } from "../utils/Utils.js";
+import { useSettings } from "./SettingsContext.jsx";
 
 export const TEST_STATES = {
     NOT_STARTED: 0,
@@ -12,10 +12,11 @@ export const TEST_STATES = {
 
 const TypeTestContext = createContext();
 export const TypeTestProvider = ({ children }) => {
-    const { generateRandomWord, generateWords } = useWords(WordES);
+    const { testLang } = useSettings();
+    const { generateRandomWord, generateWords } = useWords(testLang);
 
     // settings
-    const [duration, setDuration] = useState(60);
+    const [duration, setDuration] = useState(5);
 
     // timer
     const [timeLeft, setTimeLeft] = useState(undefined); // Necesario para los renderizados

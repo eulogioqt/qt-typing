@@ -1,15 +1,19 @@
 import React from "react";
 
 import { TypeTestProvider } from "../../contexts/TypeTestContext";
+import { SettingsProvider } from "../../contexts/SettingsContext";
+
 import TypeTestPage from "../typetest/TypeTestPage";
 
 import "./css/app.css";
 
 const App = () => {
     return (
-        <TypeTestProvider>
-            <TypeTestPage />
-        </TypeTestProvider>
+        <SettingsProvider>
+            <TypeTestProvider>
+                <TypeTestPage />
+            </TypeTestProvider>
+        </SettingsProvider>
     );
 }
 
