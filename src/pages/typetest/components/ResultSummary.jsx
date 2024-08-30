@@ -28,7 +28,7 @@ const ResultSummary = () => {
         return null;
 
     return (
-        <div className='d-flex flex-column mt-4 pt-3 pb-1 rounded-3 border border-dark' style={{ backgroundColor: "#e3d5ca" }}>
+        <div className='d-flex flex-column mt-4 pt-3 pb-1 rounded-3 border border-dark' style={{ backgroundColor: "#dddddd" }}>
             <div className="d-flex flex-column">
                 <span className='text-center fw-bold' style={{ fontSize: "2.5rem" }}>
                     {wpmCalc} PPM
@@ -39,7 +39,7 @@ const ResultSummary = () => {
             </div>
 
             {resultItems.map((result, index) => (
-                <ResultItem key={index} resultName={result.resultName} bgColor={index % 2 === 0 ? "#f5ebe0" : ""}
+                <ResultItem key={index} resultName={result.resultName} bgColor={index % 2 === 0 ? "#eeeeee" : ""}
                     display={
                         <div className={result.className}>{result.content}</div>
                     } />

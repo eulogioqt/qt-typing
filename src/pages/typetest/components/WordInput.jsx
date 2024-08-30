@@ -2,10 +2,12 @@ import React from "react";
 
 import { TEST_STATES, useTypeTest } from "../../../contexts/TypeTestContext";
 import { getWordLength } from "../../../utils/Utils";
+import { useIsLarge } from '../../../hooks/useIsLarge';
 
 const WordInput = () => {
     const { writtenWords, setWrittenWords, inputText, setInputText,
         wordList, testState, onStart, setAccuracy } = useTypeTest();
+    const isLarge = useIsLarge();
 
     const onInputChange = (e) => {
         const newValue = e.target.value;
@@ -64,7 +66,7 @@ const WordInput = () => {
     return (
         <input
             className="p-1 rounded-3 w-100 border border-black"
-            style={{ fontSize: "1.5rem", maxWidth: "500px", height: "2.25em" }}
+            style={{ fontSize: isLarge ? "1.5rem" : "1.25rem", maxWidth: "500px", height: "2.25em" }}
             value={inputText}
             onChange={onInputChange}
             spellCheck={false}
