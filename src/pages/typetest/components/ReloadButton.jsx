@@ -10,8 +10,8 @@ const ReloadButton = () => {
     const isLarge = useIsLarge();
 
     return (
-        <button className="d-flex align-items-center ms-2 btn rounded-3 text-white border border-black" onClick={onReload}
-            style={{ fontSize: isLarge ? "1.5em" : "1.25rem", height: "2.25em", backgroundColor: "#444444" }}>
+        <button className="d-flex align-items-center ms-2 btn btn-black" onClick={onReload}
+            style={{ fontSize: isLarge ? "1.5em" : "1.25rem", height: "2.25em" }}>
             <img src={reload} style={{ height: isLarge ? "1.5rem" : "1.4rem" }} />
         </button>
     );

@@ -4,14 +4,13 @@
     overflow-y: hidden;
     border: 1px solid #000;
     background-color: rgba(255, 255, 255, 1);
-    margin-bottom: 0.5rem;
 }
 
 .test-overlay {
     border: 1px solid #000;
     background: radial-gradient(circle, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2));
     height: 5.5rem;
-    z-index: 100;
+    z-index: 10;
     backdrop-filter: blur(3px);
     text-shadow: 2px 2px #000;
     color: #fff;

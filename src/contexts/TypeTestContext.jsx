@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-import WordES from "../data/WordsES.json";
 import { useWords } from "../hooks/useWords";
 import { getWordLength } from "../utils/Utils.js";
+import { useSettings } from "./SettingsContext.jsx";
 
 export const TEST_STATES = {
     NOT_STARTED: 0,
@@ -12,10 +12,8 @@ export const TEST_STATES = {
 
 const TypeTestContext = createContext();
 export const TypeTestProvider = ({ children }) => {
-    const { generateRandomWord, generateWords } = useWords(WordES);
-
-    // settings
-    const [duration, setDuration] = useState(60);
+    const { testLang, duration } = useSettings();
+    const { generateRandomWord, generateWords } = useWords(testLang);
 
     // timer
     const [timeLeft, setTimeLeft] = useState(undefined); // Necesario para los renderizados
@@ -56,6 +54,22 @@ export const TypeTestProvider = ({ children }) => {
         setWordList(wordList => [...wordList, generateRandomWord()]);
     }, [writtenWords]);
 
+    const [firstRender, setFirstRender] = useState(true);
+    useEffect(() => {
+        if (firstRender) setFirstRender(false);
+        else onReload();
+
+        const reloadF5 = (event) => {
+            if (event.key === 'F5') {
+                event.preventDefault();
+                onReload();
+            }
+        }
+
+        window.addEventListener('keydown', reloadF5);
+        return () => window.removeEventListener('keydown', reloadF5);
+    }, [testLang]);
+
     const onReload = () => {
         [...document.querySelectorAll('[nword]')].map(word => word.style.display = "inline-block")
 
@@ -91,8 +105,6 @@ export const TypeTestProvider = ({ children }) => {
     return (
         <TypeTestContext.Provider
             value={{
-                duration,
-                setDuration,
                 timeLeft,
                 setTimeLeft,
                 endTime,

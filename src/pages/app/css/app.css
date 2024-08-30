@@ -20,3 +20,38 @@ html {
     /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
+
+.no-pointer {
+    cursor: auto;
+}
+
+.black-color {
+    background-color: #444444;
+}
+
+.btn-black {
+    border-radius: 0.5rem !important;
+    color: white !important;
+    border: 1px solid black !important;
+    background-color: #444444 !important;
+}
+
+.btn-black:hover {
+    background-color: #343434 !important;
+}
+
+.btn-black:active {
+    background-color: #333333 !important;
+}
+
+.dropdown-item-black {
+    color: white !important;
+}
+
+.dropdown-item-black:hover {
+    background-color: #343434;
+}
+
+.dropdown-item-black.active {
+    background-color: #333333 !important;
+}
