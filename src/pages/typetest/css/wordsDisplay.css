@@ -3,7 +3,7 @@
     height: 5.5rem;
     overflow-y: hidden;
     border: 1px solid #000;
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 1);
     margin-bottom: 0.5rem;
 }
 
@@ -22,4 +22,16 @@
     align-items: center;
     position: absolute;
     top: 0;
+}
+
+.bg-gray {
+    background-color: rgb(212, 212, 212);
+}
+
+.bg-green {
+    background-color: rgb(175, 255, 199);
+}
+
+.bg-red {
+    background-color: rgb(255, 164, 164);
 }
