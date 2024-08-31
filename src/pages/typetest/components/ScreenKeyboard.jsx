@@ -46,23 +46,53 @@ const ScreenKeyboard = () => {
         </div>
     )
 
-
-    const generateStyle = (letter) => ({
+    const baseStyle = (letter) => ({
         fontFamily: "monospace",
         backgroundColor: pressedKeys[letter] ? "#222222" : "#444444",
         color: pressedKeys[letter] ? "gray" : "white",
         fontSize: keyCapSize / 3 + "px",
         border: "1px solid black",
         boxShadow: pressedKeys[letter] ? "" : "0px 2px 0px #222222",
-        borderRadius: keyCapSize / 6 + "px",
         margin: pressedKeys[letter] ? "4px 2px -2px 2px" : "2px",
         width: (keyCapSize * (WIDTH_KEY_MULTIPLIER[letter] ?? 1)) + "px",
         height: keyCapSize + "px",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        padding: "0px"
+        padding: "0px",
+        borderBottomLeftRadius: keyCapSize / 6 + "px",
+        borderTopLeftRadius: keyCapSize / 6 + "px",
+        borderTopRightRadius: keyCapSize / 6 + "px",
+        borderBottomRightRadius: keyCapSize / 6 + "px",
     });
+
+    const ENTERTOP = () => ({
+        ...baseStyle("ENTERTOP"),
+        margin: pressedKeys["ENTERTOP"] ? "4px 2px -2px 2px" : "2px 2px 2px 2px",
+        borderBottomLeftRadius: keyCapSize / 6 + "px",
+        borderTopLeftRadius: keyCapSize / 6 + "px",
+        borderTopRightRadius: keyCapSize / 6 + "px",
+        borderBottomRightRadius: "0px",
+        borderBottom: "0px",
+    });
+
+    const ENTERBOT = () => ({
+        ...baseStyle("ENTERBOT"),
+        margin: pressedKeys["ENTERBOT"] ? "0px 2px 0px 2px" : "-2px 2px 2px 2px",
+        height: 4 + keyCapSize + "px",
+        borderBottomLeftRadius: keyCapSize / 6 + "px",
+        borderBottomRightRadius: keyCapSize / 6 + "px",
+        borderTopLeftRadius: "0px",
+        borderTopRightRadius: "0px",
+        borderTop: "0px",
+    });
+
+    const generateStyle = (letter) => {
+        if (letter === "ENTERTOP") return ENTERTOP();
+        if (letter === "ENTERBOT") return ENTERBOT();
+        return baseStyle(letter);
+    };
+
 
     const handleKeyDown = (event) => {
         const key = (event.code.startsWith("Key") ? event.code.substring(3) : event.code).toUpperCase();
