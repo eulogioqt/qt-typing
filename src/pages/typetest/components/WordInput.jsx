@@ -12,13 +12,12 @@ const WordInput = () => {
     const onInputChange = (e) => {
         const newValue = e.target.value;
 
-        // Si se escriben espacios o el resultado es vacío, se deja el input vacío y no se procesa
         if (newValue.trim().length === 0) setInputText("");
         else {
-            if (testState === TEST_STATES.NOT_STARTED) // Iniciar test si aún no ha comenzado
+            if (testState === TEST_STATES.NOT_STARTED)
                 onStart();
 
-            if (testState !== TEST_STATES.FINISHED) {  // Si el test no ha terminado, procesar el input
+            if (testState !== TEST_STATES.FINISHED) {
                 const { correct, wrong, updatedInputText } = processInput(newValue);
 
                 setInputText(updatedInputText);

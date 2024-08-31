@@ -9,7 +9,7 @@ const ScreenKeyboard = () => {
     const { width, height } = useWindowsSize();
 
     const [pressedKeys, setPressedKeys] = useState({});
-    const keyCapSize = Math.min(width / 24, height / 20); // px // poner un threshold para desaparecer
+    const keyCapSize = Math.min(width / 24, height / 20); // px
 
     const TabSymbol = <span className="position-absolute d-flex flex-column" style={{ right: (keyCapSize / 6) + "px", bottom: "0px" }}>
         <span className="position-absolute d-flex flex-column" style={{ right: "0px", bottom: (keyCapSize / 6) + "px" }}>⇤</span>
