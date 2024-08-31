@@ -8,12 +8,19 @@ const ScreenKeyboard = () => {
     const { testState } = useTypeTest();
     const { width, height } = useWindowsSize();
 
+    const [capsLock, setCapsLock] = useState(false);
     const [pressedKeys, setPressedKeys] = useState({});
-    const keyCapSize = Math.min(width / 24, height / 20); // px // poner un threshold para desaparecer
+    const keyCapSize = Math.min(width / 24, height / 20); // px
 
     const TabSymbol = <span className="position-absolute d-flex flex-column" style={{ right: (keyCapSize / 6) + "px", bottom: "0px" }}>
         <span className="position-absolute d-flex flex-column" style={{ right: "0px", bottom: (keyCapSize / 6) + "px" }}>⇤</span>
         <span className="position-absolute d-flex flex-column" style={{ right: "0px", bottom: "0px" }}>⇥</span>
+    </span>
+
+    const CapsLockSymbol = <span className="position-absolute d-flex flex-column" style={{ right: (keyCapSize / 6) + "px", top: "0px" }}>
+        <span className="position-absolute d-flex flex-column" style={{
+            right: "-" + keyCapSize / 6 + "px", top: "-" + keyCapSize / 3 + "px", color: capsLock ? "white" : "gray", fontSize: keyCapSize / 1.5
+        }}>·</span>
     </span>
 
     const SingleDisplayEnd = (bottomRight) => (
@@ -46,26 +53,58 @@ const ScreenKeyboard = () => {
         </div>
     )
 
-
-    const generateStyle = (letter) => ({
+    const baseStyle = (letter) => ({
         fontFamily: "monospace",
         backgroundColor: pressedKeys[letter] ? "#222222" : "#444444",
         color: pressedKeys[letter] ? "gray" : "white",
         fontSize: keyCapSize / 3 + "px",
         border: "1px solid black",
         boxShadow: pressedKeys[letter] ? "" : "0px 2px 0px #222222",
-        borderRadius: "8px",
         margin: pressedKeys[letter] ? "4px 2px -2px 2px" : "2px",
         width: (keyCapSize * (WIDTH_KEY_MULTIPLIER[letter] ?? 1)) + "px",
         height: keyCapSize + "px",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        padding: "0px"
+        padding: "0px",
+        borderBottomLeftRadius: keyCapSize / 6 + "px",
+        borderTopLeftRadius: keyCapSize / 6 + "px",
+        borderTopRightRadius: keyCapSize / 6 + "px",
+        borderBottomRightRadius: keyCapSize / 6 + "px",
     });
+
+    const ENTERTOP = () => ({
+        ...baseStyle("ENTERTOP"),
+        margin: pressedKeys["ENTERTOP"] ? "4px 2px -2px 2px" : "2px 2px 2px 2px",
+        borderBottomLeftRadius: keyCapSize / 6 + "px",
+        borderTopLeftRadius: keyCapSize / 6 + "px",
+        borderTopRightRadius: keyCapSize / 6 + "px",
+        borderBottomRightRadius: "0px",
+        borderBottom: "0px",
+    });
+
+    const ENTERBOT = () => ({
+        ...baseStyle("ENTERBOT"),
+        margin: pressedKeys["ENTERBOT"] ? "0px 2px 0px 2px" : "-2px 2px 2px 2px",
+        height: 4 + keyCapSize + "px",
+        borderBottomLeftRadius: keyCapSize / 6 + "px",
+        borderBottomRightRadius: keyCapSize / 6 + "px",
+        borderTopLeftRadius: "0px",
+        borderTopRightRadius: "0px",
+        borderTop: "0px",
+    });
+
+    const generateStyle = (letter) => {
+        if (letter === "ENTERTOP") return ENTERTOP();
+        if (letter === "ENTERBOT") return ENTERBOT();
+        return baseStyle(letter);
+    };
+
 
     const handleKeyDown = (event) => {
         const key = (event.code.startsWith("Key") ? event.code.substring(3) : event.code).toUpperCase();
+        setCapsLock(event.getModifierState("CapsLock"));
+
         if (event.key.toUpperCase() === "ENTER") {
             setPressedKeys(prevState => ({
                 ...prevState,
@@ -143,7 +182,7 @@ const ScreenKeyboard = () => {
         "BRACKETRIGHT": ThreeDisplay("*", "+", "]"),
         "ENTERTOP": "",
 
-        "CAPSLOCK": SingleDisplayStart("Bloq Mayus"),
+        "CAPSLOCK": SingleDisplayStart("Bloq Mayus", CapsLockSymbol),
         "SEMICOLON": ThreeDisplay("Ñ", "", ""),
         "QUOTE": ThreeDisplay("¨", "´", "{"),
         "BACKSLASH": ThreeDisplay("ç", "}", ""),
@@ -175,21 +214,21 @@ const ScreenKeyboard = () => {
         "ENTERBOT": 1.25,
         "SHIFTLEFT": 1.25,
         "SHIFTRIGHT": 2.775,
-        "CONTROLLEFT": 1.25,
-        "METALEFT": 1.25,
-        "ALTLEFT": 1.25,
+        "CONTROLLEFT": 1.3,
+        "METALEFT": 1.3,
+        "ALTLEFT": 1.3,
         "SPACE": 6.4,
-        "ALTRIGHT": 1.25,
-        "FN": 1.25,
-        "CONTEXTMENU": 1.25,
-        "CONTROLRIGHT": 1.25
+        "ALTRIGHT": 1.3,
+        "FN": 1.3,
+        "CONTEXTMENU": 1.3,
+        "CONTROLRIGHT": 1.3
     }
 
     if (!showKeyboard || testState === TEST_STATES.FINISHED) return null;
 
     return (
         <div className="d-md-inline no-select d-none mt-5 border-black border px-3 py-1 rounded-3" style={{
-            backgroundColor: "#333333", boxShadow: "0px 5px 1px #222222"
+            backgroundColor: "#333333", boxShadow: "0px 8px 0px #222222"
         }}>
             {letters.map((row, index) => (
                 <div className="row d-flex justify-content-between" key={index}>

@@ -17,11 +17,8 @@ const TestSettingsMenu = ({ isOpen, closeTestSettings }) => {
     const handleDurationInputBlur = () => {
         let actualValue = parseInt(duration, 10);
 
-        if (isNaN(actualValue) || actualValue < 5) {
-            actualValue = 5;
-        } else if (actualValue > 60) {
-            actualValue = 60;
-        }
+        if (isNaN(actualValue) || actualValue < 5) actualValue = 5;
+        else if (actualValue > 60) actualValue = 60;
 
         setDuration(actualValue);
     };
@@ -73,18 +70,20 @@ const TestSettingsMenu = ({ isOpen, closeTestSettings }) => {
                 </div>}
             />
 
-            <SettingDisplay
-                settingName={"Teclado en pantalla"}
-                input={<div className="form-check form-switch">
-                    <input
-                        className="form-check-input"
-                        type="checkbox"
-                        checked={showKeyboard}
-                        onChange={() => setShowKeyboard(value => !value)}
-                        style={{ width: "40px", height: "25px" }}
-                    />
-                </div>}
-            />
+            <div className="d-md-block d-none"> {/*Ocultar opción si el teclado no cabe (se oculta en md)*/}
+                <SettingDisplay
+                    settingName={"Teclado en pantalla"}
+                    input={<div className="form-check form-switch">
+                        <input
+                            className="form-check-input"
+                            type="checkbox"
+                            checked={showKeyboard}
+                            onChange={() => setShowKeyboard(value => !value)}
+                            style={{ width: "40px", height: "25px" }}
+                        />
+                    </div>}
+                />
+            </div>
         </Menu>
     );
 }
