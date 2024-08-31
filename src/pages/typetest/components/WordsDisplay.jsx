@@ -50,7 +50,7 @@ const WordsDisplay = ({ openTestSettings }) => {
 
                 <span className="ms-2 btn btn-black no-pointer" style={{
                     display: liveWPM ? "inline" : "none"
-                }}>PPM: {lWPM}</span>
+                }}>{lWPM} PPM</span>
             </div>
 
             <div className="d-flex justify-content-center align-items-center position-relative mt-2">
