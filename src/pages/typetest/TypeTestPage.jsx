@@ -29,6 +29,7 @@ const TypeTestPage = () => {
                 <WordsDisplay openTestSettings={() => setOpenTestSettings(true)} />
 
                 <ScreenKeyboard />
+
                 <ResultSummary />
             </div >
         </>

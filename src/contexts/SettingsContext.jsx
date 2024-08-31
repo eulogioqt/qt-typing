@@ -8,6 +8,7 @@ export const SettingsProvider = ({ children }) => {
     const [liveWPM, setLiveWPM] = useState(false);
     const [duration, setDuration] = useState(60);
     const [hideTime, setHideTime] = useState(false);
+    const [showKeyboard, setShowKeyboard] = useState(false);
 
     return (
         <SettingsContext.Provider
@@ -20,7 +21,9 @@ export const SettingsProvider = ({ children }) => {
                 duration,
                 setDuration,
                 hideTime,
-                setHideTime
+                setHideTime,
+                showKeyboard,
+                setShowKeyboard
             }}
         >
             {children}
