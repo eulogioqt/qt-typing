@@ -1,13 +1,7 @@
-import { useEffect, useState } from "react";
+import { useWindowsSize } from "./useWindowsSize";
 
 export const useIsLarge = () => {
-    const [width, setWidth] = useState(window.innerWidth);
-
-    useEffect(() => {
-        const handleResize = () => setWidth(window.innerWidth);
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    const { width } = useWindowsSize();
 
     return width > 768;
 }

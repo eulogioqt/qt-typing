@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useSettings } from "../../../contexts/SettingsContext";
+import { useWindowsSize } from "../../../hooks/useWindowsSize";
 import { TEST_STATES, useTypeTest } from "../../../contexts/TypeTestContext";
 
 const ScreenKeyboard = () => {
     const { showKeyboard } = useSettings();
     const { testState } = useTypeTest();
+    const { width, height } = useWindowsSize();
 
     const [pressedKeys, setPressedKeys] = useState({});
-    const keyCapSize = window.innerHeight / 20; // px
+    const keyCapSize = Math.min(width / 24, height / 20); // px // poner un threshold para desaparecer
 
     const TabSymbol = <span className="position-absolute d-flex flex-column" style={{ right: (keyCapSize / 6) + "px", bottom: "0px" }}>
         <span className="position-absolute d-flex flex-column" style={{ right: "0px", bottom: (keyCapSize / 6) + "px" }}>⇤</span>
@@ -186,7 +188,7 @@ const ScreenKeyboard = () => {
     if (!showKeyboard || testState === TEST_STATES.FINISHED) return null;
 
     return (
-        <div className="d-lg-inline no-select d-none mt-5 border-black border px-3 py-1 rounded-3" style={{
+        <div className="d-md-inline no-select d-none mt-5 border-black border px-3 py-1 rounded-3" style={{
             backgroundColor: "#333333", boxShadow: "0px 5px 1px #222222"
         }}>
             {letters.map((row, index) => (
