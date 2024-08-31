@@ -6,36 +6,8 @@ const ScreenKeyboard = () => {
     const { showKeyboard } = useSettings();
     const { testState } = useTypeTest();
 
-    if (!showKeyboard || testState === TEST_STATES.FINISHED) return null;
-
     const [pressedKeys, setPressedKeys] = useState({});
     const keyCapSize = window.innerHeight / 20; // px
-
-    const letters = [
-        ["º", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "?", "¿", "BACK"],
-        ["TAB", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "`", "+", "ENTERTOP"],
-        ["BMAY", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Ñ", "´", "ç", "ENTERBOT"],
-        ["LMAY", "<", "Z", "X", "C", "V", "B", "N", "M", ",", ".", "-", "RMAY"],
-        ["LCNTRL", "LWIN", "ALT", "SPACE", "ALTGR", "FN", "RWIN", "RCNTRL"]
-    ];
-
-    const WIDTH_KEY_MULTIPLIER = {
-        "BACK": 2,
-        "TAB": 1.5,
-        "ENTERTOP": 1.5,
-        "BMAY": 1.75,
-        "ENTERBOT": 1.25,
-        "LMAY": 1.25,
-        "RMAY": 2.775,
-        "LCNTRL": 1.25,
-        "LWIN": 1.25,
-        "ALT": 1.25,
-        "SPACE": 6.4,
-        "ALTGR": 1.25,
-        "FN": 1.25,
-        "RWIN": 1.25,
-        "RCNTRL": 1.25
-    }
 
     const TabSymbol = <span className="position-absolute d-flex flex-column" style={{ right: (keyCapSize / 6) + "px", bottom: "0px" }}>
         <span className="position-absolute d-flex flex-column" style={{ right: "0px", bottom: (keyCapSize / 6) + "px" }}>⇤</span>
@@ -72,49 +44,6 @@ const ScreenKeyboard = () => {
         </div>
     )
 
-    const LETTER_DISPLAY = {
-        "º": ThreeDisplay("ª", "º", '\\'),
-        "1": ThreeDisplay("!", "1", "|"),
-        "2": ThreeDisplay("\"", "2", "@"),
-        "3": ThreeDisplay("·", "3", "#"),
-        "4": ThreeDisplay("$", "4", "~"),
-        "5": ThreeDisplay("%", "5", ""),
-        "6": ThreeDisplay("&", "6", "¬"),
-        "7": ThreeDisplay("/", "7", ""),
-        "8": ThreeDisplay("(", "8", ""),
-        "9": ThreeDisplay(")", "9", ""),
-        "0": ThreeDisplay("=", "0", ""),
-        "?": ThreeDisplay("?", ",", ""),
-        "¿": ThreeDisplay("¿", "¡", ""),
-        "BACK": SingleDisplayEnd("←"),
-
-        "TAB": SingleDisplayStart("Tab", TabSymbol),
-        "E": ThreeDisplay("E", "", "€"),
-        "`": ThreeDisplay("^", "`", "["),
-        "+": ThreeDisplay("*", "+", "]"),
-        "ENTERTOP": "",
-
-        "BMAY": SingleDisplayStart("Bloq Mayus"),
-        "´": ThreeDisplay("¨", "´", "{"),
-        "ç": ThreeDisplay("ç", "}", ""),
-        "ENTERBOT": SingleDisplayEnd("↵ Intro"),
-
-        "LMAY": SingleDisplayStart("⇧"),
-        "<": ThreeDisplay("<", ">", ""),
-        ",": ThreeDisplay(";", ",", ""),
-        ".": ThreeDisplay(":", ".", ""),
-        "-": ThreeDisplay("_", "-", ""),
-        "RMAY": SingleDisplayEnd("⇧"),
-
-        "LCNTRL": SingleDisplayCenter("Ctrl"),
-        "LWIN": SingleDisplayCenter("Win"),
-        "ALT": SingleDisplayCenter("Alt"),
-        "SPACE": "",
-        "ALTGR": SingleDisplayCenter("Alt Gr"),
-        "FN": SingleDisplayCenter("Fn"),
-        "RWIN": SingleDisplayCenter("Win"),
-        "RCNTRL": SingleDisplayCenter("Ctrl")
-    }
 
     const generateStyle = (letter) => ({
         fontFamily: "monospace",
@@ -133,8 +62,14 @@ const ScreenKeyboard = () => {
     });
 
     const handleKeyDown = (event) => {
-        const key = event.key.toUpperCase();
-        if (key.length === 1 && key.match(/[A-ZÑ]/)) {
+        const key = (event.code.startsWith("Key") ? event.code.substring(3) : event.code).toUpperCase();
+        if (event.key.toUpperCase() === "ENTER") {
+            setPressedKeys(prevState => ({
+                ...prevState,
+                ["ENTERTOP"]: true,
+                ["ENTERBOT"]: true
+            }));
+        } else if (letters.some(row => row.some(registeredKey => registeredKey === key))) {
             setPressedKeys(prevState => ({
                 ...prevState,
                 [key]: true
@@ -143,8 +78,20 @@ const ScreenKeyboard = () => {
     };
 
     const handleKeyUp = (event) => {
-        const key = event.key.toUpperCase();
-        if (key.length === 1 && key.match(/[A-ZÑ]/)) {
+        const key = (event.code.startsWith("Key") ? event.code.substring(3) : event.code).toUpperCase();
+        if (event.key.toUpperCase() === "ENTER") {
+            setPressedKeys(prevState => ({
+                ...prevState,
+                ["ENTERTOP"]: false,
+                ["ENTERBOT"]: false
+            }));
+        } else if (event.key.toUpperCase() === "SHIFT") {
+            setPressedKeys(prevState => ({
+                ...prevState,
+                ["SHIFTLEFT"]: false,
+                ["SHIFTRIGHT"]: false
+            }));
+        } else if (letters.some(row => row.some(registeredKey => registeredKey === key))) {
             setPressedKeys(prevState => ({
                 ...prevState,
                 [key]: false
@@ -161,6 +108,81 @@ const ScreenKeyboard = () => {
             window.removeEventListener("keyup", handleKeyUp);
         };
     }, []);
+
+
+    const letters = [
+        ["BACKQUOTE", "DIGIT1", "DIGIT2", "DIGIT3", "DIGIT4", "DIGIT5", "DIGIT6", "DIGIT7", "DIGIT8", "DIGIT9", "DIGIT0", "MINUS", "EQUAL", "BACKSPACE"],
+        ["TAB", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "BRACKETLEFT", "BRACKETRIGHT", "ENTERTOP"],
+        ["CAPSLOCK", "A", "S", "D", "F", "G", "H", "J", "K", "L", "SEMICOLON", "QUOTE", "BACKSLASH", "ENTERBOT"],
+        ["SHIFTLEFT", "INTLBACKSLASH", "Z", "X", "C", "V", "B", "N", "M", "COMMA", "PERIOD", "SLASH", "SHIFTRIGHT"],
+        ["CONTROLLEFT", "METALEFT", "ALTLEFT", "SPACE", "ALTRIGHT", "FN", "CONTEXTMENU", "CONTROLRIGHT"]
+    ];
+
+    const LETTER_DISPLAY = {
+        "BACKQUOTE": ThreeDisplay("ª", "º", '\\'),
+        "DIGIT1": ThreeDisplay("!", "1", "|"),
+        "DIGIT2": ThreeDisplay("\"", "2", "@"),
+        "DIGIT3": ThreeDisplay("·", "3", "#"),
+        "DIGIT4": ThreeDisplay("$", "4", "~"),
+        "DIGIT5": ThreeDisplay("%", "5", ""),
+        "DIGIT6": ThreeDisplay("&", "6", "¬"),
+        "DIGIT7": ThreeDisplay("/", "7", ""),
+        "DIGIT8": ThreeDisplay("(", "8", ""),
+        "DIGIT9": ThreeDisplay(")", "9", ""),
+        "DIGIT0": ThreeDisplay("=", "0", ""),
+        "MINUS": ThreeDisplay("?", ",", ""),
+        "EQUAL": ThreeDisplay("¿", "¡", ""),
+        "BACKSPACE": SingleDisplayEnd("←"),
+
+        "TAB": SingleDisplayStart("Tab", TabSymbol),
+        "E": ThreeDisplay("E", "", "€"),
+        "BRACKETLEFT": ThreeDisplay("^", "`", "["),
+        "BRACKETRIGHT": ThreeDisplay("*", "+", "]"),
+        "ENTERTOP": "",
+
+        "CAPSLOCK": SingleDisplayStart("Bloq Mayus"),
+        "SEMICOLON": ThreeDisplay("Ñ", "", ""),
+        "QUOTE": ThreeDisplay("¨", "´", "{"),
+        "BACKSLASH": ThreeDisplay("ç", "}", ""),
+        "ENTERBOT": SingleDisplayEnd("↵ Intro"),
+
+        "SHIFTLEFT": SingleDisplayStart("⇧"),
+        "INTLBACKSLASH": ThreeDisplay("<", ">", ""),
+        "COMMA": ThreeDisplay(";", ",", ""),
+        "PERIOD": ThreeDisplay(":", ".", ""),
+        "SLASH": ThreeDisplay("_", "-", ""),
+        "SHIFTRIGHT": SingleDisplayEnd("⇧"),
+
+        "CONTROLLEFT": SingleDisplayCenter("Ctrl"),
+        "METALEFT": SingleDisplayCenter("Win"),
+        "ALTLEFT": SingleDisplayCenter("Alt"),
+        "SPACE": "",
+        "ALTRIGHT": SingleDisplayCenter("Alt Gr"),
+        "FN": SingleDisplayCenter("Fn"),
+        "CONTEXTMENU": SingleDisplayCenter("☰"),
+        "CONTROLRIGHT": SingleDisplayCenter("Ctrl")
+    }
+
+
+    const WIDTH_KEY_MULTIPLIER = {
+        "BACKSPACE": 2,
+        "TAB": 1.5,
+        "ENTERTOP": 1.5,
+        "CAPSLOCK": 1.75,
+        "ENTERBOT": 1.25,
+        "SHIFTLEFT": 1.25,
+        "SHIFTRIGHT": 2.775,
+        "CONTROLLEFT": 1.25,
+        "METALEFT": 1.25,
+        "ALTLEFT": 1.25,
+        "SPACE": 6.4,
+        "ALTRIGHT": 1.25,
+        "FN": 1.25,
+        "CONTEXTMENU": 1.25,
+        "CONTROLRIGHT": 1.25
+    }
+
+    if (!showKeyboard || testState === TEST_STATES.FINISHED) return null;
 
     return (
         <div className="d-lg-inline no-select d-none mt-5 bg-dark px-3 py-1 rounded-3">
