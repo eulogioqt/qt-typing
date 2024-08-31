@@ -48,7 +48,7 @@ const WordsDisplay = ({ openTestSettings }) => {
                     </div>
                 </div>
 
-                <span className="btn btn-black no-pointer" style={{
+                <span className="ms-2 btn btn-black no-pointer" style={{
                     display: liveWPM ? "inline" : "none"
                 }}>PPM: {lWPM}</span>
             </div>

@@ -54,7 +54,7 @@ const ScreenKeyboard = () => {
         fontSize: keyCapSize / 3 + "px",
         border: "1px solid black",
         boxShadow: pressedKeys[letter] ? "" : "0px 2px 0px #222222",
-        borderRadius: "8px",
+        borderRadius: keyCapSize / 6 + "px",
         margin: pressedKeys[letter] ? "4px 2px -2px 2px" : "2px",
         width: (keyCapSize * (WIDTH_KEY_MULTIPLIER[letter] ?? 1)) + "px",
         height: keyCapSize + "px",
@@ -189,7 +189,7 @@ const ScreenKeyboard = () => {
 
     return (
         <div className="d-md-inline no-select d-none mt-5 border-black border px-3 py-1 rounded-3" style={{
-            backgroundColor: "#333333", boxShadow: "0px 5px 1px #222222"
+            backgroundColor: "#333333", boxShadow: "0px 8px 0px #222222"
         }}>
             {letters.map((row, index) => (
                 <div className="row d-flex justify-content-between" key={index}>
