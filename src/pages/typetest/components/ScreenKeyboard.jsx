@@ -47,18 +47,19 @@ const ScreenKeyboard = () => {
 
     const generateStyle = (letter) => ({
         fontFamily: "monospace",
-        backgroundColor: pressedKeys[letter] ? "white" : "#444444",
-        color: pressedKeys[letter] ? "#444444" : "white",
+        backgroundColor: pressedKeys[letter] ? "#222222" : "#444444",
+        color: pressedKeys[letter] ? "gray" : "white",
         fontSize: keyCapSize / 3 + "px",
         border: "1px solid black",
+        boxShadow: pressedKeys[letter] ? "" : "0px 2px 0px #222222",
         borderRadius: "8px",
-        margin: "1px",
+        margin: pressedKeys[letter] ? "4px 2px -2px 2px" : "2px",
         width: (keyCapSize * (WIDTH_KEY_MULTIPLIER[letter] ?? 1)) + "px",
         height: keyCapSize + "px",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        padding: "0px",
+        padding: "0px"
     });
 
     const handleKeyDown = (event) => {
@@ -185,7 +186,9 @@ const ScreenKeyboard = () => {
     if (!showKeyboard || testState === TEST_STATES.FINISHED) return null;
 
     return (
-        <div className="d-lg-inline no-select d-none mt-5 bg-dark px-3 py-1 rounded-3">
+        <div className="d-lg-inline no-select d-none mt-5 border-black border px-3 py-1 rounded-3" style={{
+            backgroundColor: "#333333", boxShadow: "0px 5px 1px #222222"
+        }}>
             {letters.map((row, index) => (
                 <div className="row d-flex justify-content-between" key={index}>
                     {row.map(letter => (
