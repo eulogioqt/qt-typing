@@ -5,7 +5,7 @@ import SettingDisplay from "../components/SettingDisplay";
 import { useSettings } from "../../../contexts/SettingsContext";
 
 const TestSettingsMenu = ({ isOpen, closeTestSettings }) => {
-    const { liveWPM, setLiveWPM, duration, setDuration, hideTime, setHideTime } = useSettings();
+    const { liveWPM, setLiveWPM, duration, setDuration, hideTime, setHideTime, showKeyboard, setShowKeyboard } = useSettings();
 
     const handleDurationInputChange = (e) => {
         const value = e.target.value;
@@ -73,7 +73,18 @@ const TestSettingsMenu = ({ isOpen, closeTestSettings }) => {
                 </div>}
             />
 
-            {/*Teclado en pantalla*/}
+            <SettingDisplay
+                settingName={"Teclado en pantalla"}
+                input={<div className="form-check form-switch">
+                    <input
+                        className="form-check-input"
+                        type="checkbox"
+                        checked={showKeyboard}
+                        onChange={() => setShowKeyboard(value => !value)}
+                        style={{ width: "40px", height: "25px" }}
+                    />
+                </div>}
+            />
         </Menu>
     );
 }
