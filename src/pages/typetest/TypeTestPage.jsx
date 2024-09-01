@@ -2,13 +2,18 @@ import React, { useState } from 'react';
 
 import ResultSummary from './components/ResultSummary';
 import WordsDisplay from './components/WordsDisplay';
+import TestSettingsMenu from './menus/TestSettingsMenu';
+import ScreenKeyboard from './components/screen-keyboard/ScreenKeyboard';
 
 import { useIsLarge } from '../../hooks/useIsLarge';
-import TestSettingsMenu from './menus/TestSettingsMenu';
-import ScreenKeyboard from './components/ScreenKeyboard';
+import { useSettings } from '../../contexts/SettingsContext';
+import { TEST_STATES, useTypeTest } from '../../contexts/TypeTestContext';
+import { KeyboardProvider } from './components/screen-keyboard/context/KeyboardContext';
 
 const TypeTestPage = () => {
     const isLarge = useIsLarge();
+    const { showKeyboard } = useSettings();
+    const { testState } = useTypeTest();
 
     const [openTestSettings, setOpenTestSettings] = useState(false);
 
@@ -28,7 +33,13 @@ const TypeTestPage = () => {
 
                 <WordsDisplay openTestSettings={() => setOpenTestSettings(true)} />
 
-                <ScreenKeyboard />
+                {!showKeyboard || testState === TEST_STATES.FINISHED ? null :
+                    <>
+                        <KeyboardProvider>
+                            <ScreenKeyboard />
+                        </KeyboardProvider>
+                    </>
+                }
 
                 <ResultSummary />
             </div >
