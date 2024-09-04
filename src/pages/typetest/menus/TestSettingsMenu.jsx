@@ -1,11 +1,13 @@
 import React from "react";
 
-import Menu from "../../app/components/Menu";
+import WhiteScrollMenu from "../../app/components/WhiteScrollMenu";
 import SettingDisplay from "../components/SettingDisplay";
 import { useSettings } from "../../../contexts/SettingsContext";
 
-const TestSettingsMenu = ({ isOpen, closeTestSettings }) => {
+const TestSettingsMenu = ({ isOpen, closeMenu }) => {
     const { liveWPM, setLiveWPM, duration, setDuration, hideTime, setHideTime, showKeyboard, setShowKeyboard } = useSettings();
+
+    if (!isOpen) return null;
 
     const handleDurationInputChange = (e) => {
         const value = e.target.value;
@@ -24,7 +26,7 @@ const TestSettingsMenu = ({ isOpen, closeTestSettings }) => {
     };
 
     return (
-        <Menu title={"Ajustes"} isOpen={isOpen} closeButton={closeTestSettings}>
+        <WhiteScrollMenu title={"Ajustes"} closeMenu={closeMenu}>
 
             <SettingDisplay
                 settingName={"Tiempo de test"}
@@ -84,7 +86,7 @@ const TestSettingsMenu = ({ isOpen, closeTestSettings }) => {
                     </div>}
                 />
             </div>
-        </Menu>
+        </WhiteScrollMenu>
     );
 }
 

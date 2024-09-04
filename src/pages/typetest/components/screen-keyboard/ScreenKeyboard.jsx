@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import { useSettings } from "../../../../contexts/SettingsContext";
+
 import KeyCap from "./KeyCap";
 
 const letters = [
@@ -11,6 +13,8 @@ const letters = [
 ];
 
 const ScreenKeyboard = () => {
+    const { showKeyboard } = useSettings();
+
     const [pressedKeys, setPressedKeys] = useState({});
 
     const handleKeyDown = (event) => {
@@ -60,6 +64,8 @@ const ScreenKeyboard = () => {
             window.removeEventListener("keyup", handleKeyUp);
         };
     }, []);
+
+    if (!showKeyboard) return null;
 
     return (
         <div className="d-md-inline no-select d-none mt-5 border-black border px-3 py-1 rounded-3"

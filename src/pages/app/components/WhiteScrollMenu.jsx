@@ -2,10 +2,10 @@ import React from "react";
 
 import { useIsLarge } from "../../../hooks/useIsLarge";
 
-const Menu = ({ title, isOpen, closeButton, children }) => {
+const WhiteScrollMenu = ({ title, closeMenu, children }) => {
     const isLarge = useIsLarge();
 
-    return isOpen ? (
+    return (
         <div className='d-flex align-items-center justify-content-center position-fixed w-100 h-100'
             style={{ backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 100 }}>
             <div className="bg-white rounded-3 py-4 d-flex flex-column" style={{ width: "80%", maxWidth: "600px", maxHeight: "90%" }}>
@@ -18,13 +18,13 @@ const Menu = ({ title, isOpen, closeButton, children }) => {
                 </div>
 
                 <div className="text-end mt-4 px-4">
-                    <button className="btn btn-black" onClick={closeButton}>
+                    <button className="btn btn-black" onClick={closeMenu}>
                         Cerrar
                     </button>
                 </div>
             </div>
         </div>
-    ) : null;
+    );
 }
 
-export default Menu;
+export default WhiteScrollMenu;

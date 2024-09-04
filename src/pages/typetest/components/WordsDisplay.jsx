@@ -30,7 +30,7 @@ const WordsDisplay = ({ openTestSettings }) => {
 
     return (
         <>
-            <div className="col-lg-9 col-12 d-flex justify-content-start align-items-center position-relative mt-5">
+            <div className="col-lg-9 col-12 d-flex justify-content-start align-items-center position-relative mt-3">
                 <div className="d-flex justify-content-start align-items-center ">
                     <div className="dropdown me-2">
                         <button className="btn btn-black dropdown-toggle" type="button"
