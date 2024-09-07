@@ -2,6 +2,7 @@ import React from "react";
 
 import WhiteScrollMenu from "../../app/components/WhiteScrollMenu";
 import SettingDisplay from "../../app/components/SettingDisplay";
+
 import { useSettings } from "../../../contexts/SettingsContext";
 
 const TestSettingsMenu = ({ isOpen, closeMenu }) => {
@@ -26,7 +27,7 @@ const TestSettingsMenu = ({ isOpen, closeMenu }) => {
     };
 
     return (
-        <WhiteScrollMenu title={"Ajustes"} closeMenu={closeMenu}>
+        <WhiteScrollMenu title={"Ajustes"} closeMenu={closeMenu} orderInLayer={1}>
 
             <SettingDisplay
                 settingName={"Tiempo de test"}

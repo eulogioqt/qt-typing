@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import { TEST_STATES, useTypeTest } from '../../../contexts/TypeTestContext';
 import { useIsLarge } from '../../../hooks/useIsLarge';

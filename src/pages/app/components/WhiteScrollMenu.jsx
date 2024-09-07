@@ -1,13 +1,14 @@
 import React from "react";
 
+import Menu from "./Menu";
+
 import { useIsLarge } from "../../../hooks/useIsLarge";
 
-const WhiteScrollMenu = ({ title, closeMenu, children }) => {
+const WhiteScrollMenu = ({ title, closeMenu, orderInLayer, children }) => {
     const isLarge = useIsLarge();
 
     return (
-        <div className='d-flex align-items-center justify-content-center position-fixed w-100 h-100'
-            style={{ backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 100 }}>
+        <Menu orderInLayer={orderInLayer}>
             <div className="bg-white rounded-3 py-4 d-flex flex-column" style={{ width: "80%", maxWidth: "600px", maxHeight: "90%" }}>
                 <h2 className="text-center mb-4" style={{ fontSize: isLarge ? "2.5rem" : "2rem" }}>{title}</h2>
 
@@ -23,7 +24,7 @@ const WhiteScrollMenu = ({ title, closeMenu, children }) => {
                     </button>
                 </div>
             </div>
-        </div>
+        </Menu>
     );
 }
 
