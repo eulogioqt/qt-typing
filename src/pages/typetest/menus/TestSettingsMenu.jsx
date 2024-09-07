@@ -1,7 +1,7 @@
 import React from "react";
 
 import WhiteScrollMenu from "../../app/components/WhiteScrollMenu";
-import SettingDisplay from "../components/SettingDisplay";
+import SettingDisplay from "../../app/components/SettingDisplay";
 import { useSettings } from "../../../contexts/SettingsContext";
 
 const TestSettingsMenu = ({ isOpen, closeMenu }) => {
@@ -38,8 +38,8 @@ const TestSettingsMenu = ({ isOpen, closeMenu }) => {
                             value={duration}
                             onChange={handleDurationInputChange}
                             onBlur={handleDurationInputBlur}
-                            min="1"
-                            max="1000"
+                            min="5"
+                            max="60"
                             style={{ width: "80px" }}
                         />
                     </div>
