@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useRef } from "react";
 
 import { useWords } from "../hooks/useWords";
 import { getWordLength } from "../utils/Utils.js";
@@ -26,6 +26,8 @@ export const TypeTestProvider = ({ children }) => {
     const [accuracy, setAccuracy] = useState({ correct: 0, wrong: 0 });
     const [testState, setTestState] = useState(TEST_STATES.NOT_STARTED);
     const [inputText, setInputText] = useState("");
+
+    const inputRef = useRef(null);
 
     const calcKeyStrokes = () => wordList.reduce(
         ([ck, ik, cw, iw], word, index) => {
@@ -92,6 +94,13 @@ export const TypeTestProvider = ({ children }) => {
         return () => window.removeEventListener('keydown', reloadF5);
     }, [testLang]);
 
+    useEffect(() => {
+        if (inputRef.current) {
+            if (testState === TEST_STATES.FINISHED) inputRef.current.blur(); // deseleccionar al terminar
+            else if (testState === TEST_STATES.NOT_STARTED) inputRef.current.focus(); // seleccionar al reiniciar
+        }
+    }, [testState]);
+
     const onReload = () => {
         [...document.querySelectorAll('[nword]')].map(word => word.style.display = "inline-block")
 
@@ -102,6 +111,9 @@ export const TypeTestProvider = ({ children }) => {
         setTestState(TEST_STATES.NOT_STARTED);
 
         setInputText("");
+
+        if (inputRef.current)
+            inputRef.current.focus();
     }
 
     const onFinish = () => {
@@ -144,6 +156,7 @@ export const TypeTestProvider = ({ children }) => {
                 setTestState,
                 inputText,
                 setInputText,
+                inputRef,
                 calcKeyStrokes,
 
                 onFinish,
