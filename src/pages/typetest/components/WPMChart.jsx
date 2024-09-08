@@ -11,6 +11,7 @@ import {
     Legend,
     Filler // Importar Filler plugin
 } from 'chart.js';
+import { useIsLarge } from '../../../hooks/useIsLarge';
 
 ChartJS.register(
     CategoryScale,
@@ -24,6 +25,8 @@ ChartJS.register(
 );
 
 const WPMChart = ({ data }) => {
+    const isLarge = useIsLarge();
+
     const labels = Object.keys(data);  // Los segundos
     const values = Object.values(data);  // Las WPM
 
@@ -31,7 +34,7 @@ const WPMChart = ({ data }) => {
         labels,
         datasets: [
             {
-                label: 'WPM over Time',
+                label: 'Palabras por minuto',
                 data: values,
                 fill: 'origin', // Configuración del relleno
                 backgroundColor: 'rgba(255, 255, 255, 0.2)',  // Área azul con transparencia
@@ -60,17 +63,19 @@ const WPMChart = ({ data }) => {
                     display: false,  // Quita la cuadrícula en el eje X
                 },
                 title: {
-                    display: false,
-                    text: '',
-                    color: '#000000',
+                    display: true,
+                    text: 'Segundos',
+                    color: '#444444',
                     font: {
                         weight: 'bold',  // Texto en negrita
+                        size: "14"
                     },
                 },
                 ticks: {
-                    color: '#000000',  // Texto negro
+                    color: '#444444',  // Texto negro
                     font: {
                         weight: 'bold',  // Números en negrita
+                        size: "14"
                     },
                 },
             },
@@ -79,17 +84,19 @@ const WPMChart = ({ data }) => {
                     display: false,  // Quita la cuadrícula en el eje Y
                 },
                 title: {
-                    display: true,
+                    display: isLarge,
                     text: 'Palabras por minuto',
-                    color: '#000000',  // Texto negro
+                    color: '#444444',  // Texto negro
                     font: {
                         weight: 'bold',  // Texto en negrita
+                        size: "14"
                     },
                 },
                 ticks: {
-                    color: '#000000',  // Texto negro
+                    color: '#444444',  // Texto negro
                     font: {
                         weight: 'bold',  // Números en negrita
+                        size: "14"
                     },
                 },
                 beginAtZero: true,

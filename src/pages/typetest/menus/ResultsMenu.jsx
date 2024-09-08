@@ -17,6 +17,7 @@ const ResultsMenu = ({ isOpen, closeMenu }) => {
     if (!isOpen) return null;
 
     const wpmCalc = Math.round((correctKeys / 5) * 60 / duration);
+    const rawCalc = Math.round(((correctKeys + incorrectKeys) / 5) * 60 / duration);
     const accuracyCalc = Math.round(accuracy.correct / (accuracy.correct + accuracy.wrong) * 10000) / 100;
 
     const wpmData = {
@@ -45,15 +46,15 @@ const ResultsMenu = ({ isOpen, closeMenu }) => {
     const DataDisplay = ({ name, data, big = false }) => {
         return (
             <div className="d-flex flex-column justify-content-center align-items-center my-2 w-100">
-                <span className="text-start fw-bold text-dark w-100"
+                <span className="text-center fw-bold w-100"
                     style={{
-                        fontSize: big ? "2rem" : "1.5rem",
+                        fontSize: big ? "1.75rem" : "1.25rem", color: "#444444",
                         lineHeight: "1"
                     }}>{name}</span>
-                <span className="text-start fw-bold text-white w-100"
+                <span className="text-center fw-bold w-100"
                     style={{
-                        fontSize: big ? "2.5rem" : "2rem",
-                        lineHeight: "1", textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)"
+                        fontSize: big ? "3rem" : "1.75rem", color: "white",
+                        lineHeight: big ? "1" : "1.25", textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)"
                     }}>{data}</span>
             </div>
         );
@@ -65,40 +66,52 @@ const ResultsMenu = ({ isOpen, closeMenu }) => {
                 <div className="container">
                     <h1 className="text-center fw-bold text-white mt-3"
                         style={{ fontSize: isLarge ? "4rem" : "2.5rem", lineHeight: "1", textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)" }}>
-                        Resultados
+                        QT Typing
                     </h1>
+                    <h2 className="text-center mt-3 text-white"
+                        style={{ fontSize: isLarge ? "2rem" : "1.5rem", lineHeight: "1", textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)" }}>
+                        Resultados
+                    </h2>
 
-                    <div className="row mt-5">
-                        <div className="col-md-2 d-flex flex-column justify-content-center align-items-center">
+                    <div className="row">
+                        <div className="col-md-3 col-lg-2 d-flex flex-column flex-sm-row flex-md-column justify-content-center align-items-center my-3">
                             <DataDisplay name={"PPM"} data={wpmCalc} big={true} />
                             <DataDisplay name={"Precisión"} data={accuracyCalc + "%"} big={true} />
                         </div>
 
-                        <div className="col-md-10" style={{ height: "300px" }}>
+                        <div className="col-md-9 col-lg-10 my-3" style={{ height: "300px" }}>
                             <WPMChart data={wpmData} />
                         </div>
                     </div>
 
                     <div className="row d-flex align-items-center justify-content-between">
-                        <div className="col-md-2">
-                            <DataDisplay name={"Idioma"} data={testLang} />
+                        <div className="col-md-2 col-sm-4 col-6">
+                            <DataDisplay name={"Idioma"} data={testLang === "es" ? "Español" : "Inglés"} />
                         </div>
 
-                        <div className="col-md-2">
+                        <div className="col-md-2 col-sm-4 col-6">
                             <DataDisplay name={"Tiempo"} data={duration + "s"} />
                         </div>
 
-                        <div className="col-md-2">
-                            <DataDisplay name={"PPM con fallos"} data={wpmCalc * 2} />
+                        <div className="col-md-2 col-sm-4 col-6">
+                            <DataDisplay name={"Test"} data={accuracyCalc > 80 ? "Valido" : "Invalido"} />
                         </div>
 
-                        <div className="col-md-2">
-                            <DataDisplay name={"Pulsaciones"} data={correctKeys + "/" + incorrectKeys} />
+                        <div className="col-md-2 col-sm-4 col-6">
+                            <DataDisplay name={"PPM con fallos"} data={rawCalc} />
+                        </div>
+
+                        <div className="col-md-2 col-sm-4 col-6">
+                            <DataDisplay name={"Consistencia"} data={"92%"} />
+                        </div>
+
+                        <div className="col-md-2 col-sm-4 col-6">
+                            <DataDisplay name={"Palabras"} data={correctWords + "/" + incorrectWords} />
                         </div>
                     </div>
 
 
-                    <div className="d-flex align-items-center justify-content-center m-4">
+                    <div className="d-flex align-items-center justify-content-center my-4">
                         <button className="d-flex align-items-center justify-content-center btn btn-black" onClick={onNewTest}>
                             <span className="me-2">Nuevo test</span>
                             <img src={reload} style={{ height: isLarge ? "1.5rem" : "1.4rem" }} />
