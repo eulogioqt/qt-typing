@@ -13,7 +13,7 @@ import "../css/wordsDisplay.css";
 
 const WordsDisplay = ({ openTestSettings }) => {
     const { duration, testLang, setTestLang, liveWPM } = useSettings();
-    const { endTime, testState, wordList, writtenWords, calcKeyStrokes } = useTypeTest();
+    const { endTime, timeLeft, testState, wordList, writtenWords, calcKeyStrokes } = useTypeTest();
     const isLarge = useIsLarge();
 
     const [lWPM, setLWPM] = useState(0);
@@ -26,11 +26,11 @@ const WordsDisplay = ({ openTestSettings }) => {
             const calc = Math.round((correctKeys / 5) * (60 / (duration - (endTime - Date.now()) / 1000)));
             setLWPM(calc);
         }
-    }, [writtenWords, testState]);
+    }, [writtenWords, testState, timeLeft]);
 
     return (
         <>
-            <div className="col-lg-9 col-12 d-flex justify-content-start align-items-center position-relative mt-5">
+            <div className="col-lg-9 col-12 d-flex justify-content-start align-items-center position-relative mt-3">
                 <div className="d-flex justify-content-start align-items-center ">
                     <div className="dropdown me-2">
                         <button className="btn btn-black dropdown-toggle" type="button"
