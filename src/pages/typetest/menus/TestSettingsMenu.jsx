@@ -73,7 +73,7 @@ const TestSettingsMenu = ({ isOpen, closeMenu }) => {
                 </div>}
             />
 
-            <div className="d-md-block d-none"> {/*Ocultar opción si el teclado no cabe (se oculta en md)*/}
+            <div className="d-md-block d-none">
                 <SettingDisplay
                     settingName={"Teclado en pantalla"}
                     input={<div className="form-check form-switch">

@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 
-import { TEST_STATES, useTypeTest } from '../../../contexts/TypeTestContext';
-import { useIsLarge } from '../../../hooks/useIsLarge';
-import { useSettings } from '../../../contexts/SettingsContext';
+import { TEST_STATES, useTypeTest } from '../../../../contexts/TypeTestContext';
+import { useIsLarge } from '../../../../hooks/useIsLarge';
+import { useSettings } from '../../../../contexts/SettingsContext';
 
 const CountdownTimer = () => {
 	const { testState, setTimeLeft, timeLeft, endTime, onFinish } = useTypeTest();

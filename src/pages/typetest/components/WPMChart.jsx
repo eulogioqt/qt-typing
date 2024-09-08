@@ -1,5 +1,9 @@
 import React from 'react';
+
 import { Line } from 'react-chartjs-2';
+
+import { useIsLarge } from '../../../hooks/useIsLarge';
+
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -10,7 +14,6 @@ import {
     Tooltip,
     Filler
 } from 'chart.js';
-import { useIsLarge } from '../../../hooks/useIsLarge';
 
 ChartJS.register(
     CategoryScale,

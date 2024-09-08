@@ -1,22 +1,13 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 
-import { TEST_STATES, useTypeTest } from "../../../contexts/TypeTestContext";
-import { getWordLength } from "../../../utils/Utils";
-import { useIsLarge } from '../../../hooks/useIsLarge';
+import { TEST_STATES, useTypeTest } from "../../../../contexts/TypeTestContext";
+import { getWordLength } from "../../../../utils/Utils";
+import { useIsLarge } from '../../../../hooks/useIsLarge';
 
 const WordInput = () => {
-    const { writtenWords, setWrittenWords, inputText, setInputText,
+    const { writtenWords, setWrittenWords, inputText, setInputText, inputRef,
         wordList, testState, onStart, setAccuracy } = useTypeTest();
     const isLarge = useIsLarge();
-
-    const inputRef = useRef(null);
-
-    useEffect(() => {
-        if (inputRef.current) {
-            if (testState === TEST_STATES.FINISHED) inputRef.current.blur();
-            else if (testState === TEST_STATES.NOT_STARTED) inputRef.current.focus();
-        }
-    }, [testState]);
 
     const onInputChange = (e) => {
         const newValue = e.target.value;
