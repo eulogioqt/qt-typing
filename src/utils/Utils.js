@@ -20,3 +20,22 @@ export const getWordLength = (word) => {
 
     return keystrokes.length;
 }
+
+export const mean = (list) => {
+    const sum = list.reduce((acc, value) => acc + value, 0);
+    return sum / list.length;
+};
+
+export const standardDeviation = (list) => {
+    const avg = mean(list);
+    const squareDiffs = list.map(value => Math.pow(value - avg, 2));
+    const avgSquareDiff = mean(squareDiffs);
+    return Math.sqrt(avgSquareDiff);
+};
+
+export const consistency = (list) => {
+    const avg = mean(list);
+    const stdDev = standardDeviation(list);
+    const consistencyPercentage = (1 - (stdDev / avg)) * 100;
+    return consistencyPercentage;
+};

@@ -7,11 +7,12 @@ import WPMChart from "../components/WPMChart";
 import { useIsLarge } from "../../../hooks/useIsLarge";
 import { useSettings } from "../../../contexts/SettingsContext";
 import { useTypeTest } from "../../../contexts/TypeTestContext";
+import { consistency } from "../../../utils/Utils";
 
 const ResultsMenu = ({ isOpen, closeMenu }) => {
     const isLarge = useIsLarge();
     const { duration, testLang } = useSettings();
-    const { accuracy, calcKeyStrokes, onReload } = useTypeTest();
+    const { accuracy, timeStamps, calcKeyStrokes, onReload } = useTypeTest();
     const [correctKeys, incorrectKeys, correctWords, incorrectWords] = calcKeyStrokes();
 
     if (!isOpen) return null;
@@ -19,24 +20,7 @@ const ResultsMenu = ({ isOpen, closeMenu }) => {
     const wpmCalc = Math.round((correctKeys / 5) * 60 / duration);
     const rawCalc = Math.round(((correctKeys + incorrectKeys) / 5) * 60 / duration);
     const accuracyCalc = Math.round(accuracy.correct / (accuracy.correct + accuracy.wrong) * 10000) / 100;
-
-    const wpmData = {
-        1: 345,
-        2: 190,
-        3: 132,
-        4: 144,
-        5: 150,
-        6: 140,
-        7: 138,
-        8: 138,
-        9: 140,
-        10: 123,
-        11: 132,
-        12: 131,
-        13: 130,
-        14: 135,
-        15: 136
-    };
+    const consistencyCalc = Math.round(consistency(Object.values(timeStamps).map(stamp => stamp.wpm)) * 100) / 100;
 
     const onNewTest = () => {
         onReload();
@@ -80,7 +64,7 @@ const ResultsMenu = ({ isOpen, closeMenu }) => {
                         </div>
 
                         <div className="col-md-9 col-lg-10 my-3" style={{ height: "300px" }}>
-                            <WPMChart data={wpmData} />
+                            <WPMChart data={timeStamps} />
                         </div>
                     </div>
 
@@ -102,7 +86,7 @@ const ResultsMenu = ({ isOpen, closeMenu }) => {
                         </div>
 
                         <div className="col-md-2 col-sm-4 col-6">
-                            <DataDisplay name={"Consistencia"} data={"92%"} />
+                            <DataDisplay name={"Consistencia"} data={consistencyCalc + "%"} />
                         </div>
 
                         <div className="col-md-2 col-sm-4 col-6">

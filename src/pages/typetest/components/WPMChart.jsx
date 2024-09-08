@@ -8,8 +8,7 @@ import {
     LineElement,
     Title,
     Tooltip,
-    Legend,
-    Filler // Importar Filler plugin
+    Filler
 } from 'chart.js';
 import { useIsLarge } from '../../../hooks/useIsLarge';
 
@@ -20,26 +19,38 @@ ChartJS.register(
     LineElement,
     Title,
     Tooltip,
-    Legend,
-    Filler // Registrar Filler plugin
+    Filler
 );
 
 const WPMChart = ({ data }) => {
     const isLarge = useIsLarge();
 
     const labels = Object.keys(data);  // Los segundos
-    const values = Object.values(data);  // Las WPM
+    const wpmValues = Object.values(data).map(item => item.wpm);  // Valores de WPM
+    const rawValues = Object.values(data).map(item => item.raw);  // Valores de Raw
 
     const chartData = {
         labels,
         datasets: [
             {
-                label: 'Palabras por minuto',
-                data: values,
-                fill: 'origin', // Configuración del relleno
-                backgroundColor: 'rgba(255, 255, 255, 0.2)',  // Área azul con transparencia
-                borderColor: 'rgba(255, 255, 255, 1)',  // Línea azul
+                label: 'PPM',
+                data: wpmValues,
+                fill: 'origin',
+                backgroundColor: 'rgba(255, 255, 255, 0.2)',  // Área blanca con transparencia
+                borderColor: 'rgba(255, 255, 255, 1)',  // Línea blanca
                 borderWidth: 3,
+                pointRadius: 2,  // Tamaño de los puntos más pequeño
+                pointBackgroundColor: 'rgba(255, 255, 255, 1)',  // Color de los puntos
+            },
+            {
+                label: 'PPM con fallos',
+                data: rawValues,
+                fill: 'origin',
+                backgroundColor: 'rgba(168, 168, 168, 0.2)',  // Área gris con transparencia
+                borderColor: 'rgba(128, 128, 128, 1)',  // Línea gris
+                borderWidth: 3,
+                pointRadius: 2,  // Tamaño de los puntos más pequeño
+                pointBackgroundColor: 'rgba(128, 128, 128, 1)',  // Color de los puntos
             },
         ],
     };
@@ -47,63 +58,77 @@ const WPMChart = ({ data }) => {
     const options = {
         responsive: true,
         maintainAspectRatio: false,
-        tension: 0.3,  // Ajusta la curvatura de la línea si es necesario
+        tension: 0.3,  // Ajusta la curvatura de la línea
         plugins: {
             legend: {
-                display: false,
+                display: false,  // Oculta la leyenda
             },
             tooltip: {
-                mode: 'nearest',  // Muestra el tooltip del punto más cercano
-                intersect: false,  // No requiere estar exactamente sobre el punto
+                mode: 'index',  // Tooltip compartido
+                intersect: false,  // Tooltip compartido aunque los puntos no estén alineados
+                callbacks: {
+                    // Muestra tanto WPM como Raw en el mismo tooltip
+                    label: function (context) {
+                        const label = context.dataset.label || '';
+                        const value = context.raw || '';
+                        return `${label}: ${value}`;
+                    }
+                }
             },
         },
         scales: {
             x: {
                 grid: {
-                    display: false,  // Quita la cuadrícula en el eje X
+                    display: true,
+                    color: "rgba(255,255,255,0.2)"
                 },
                 title: {
                     display: true,
                     text: 'Segundos',
                     color: '#444444',
                     font: {
-                        weight: 'bold',  // Texto en negrita
+                        weight: 'bold',
                         size: "14"
                     },
                 },
                 ticks: {
-                    color: '#444444',  // Texto negro
+                    color: '#444444',
                     font: {
-                        weight: 'bold',  // Números en negrita
+                        weight: 'bold',
                         size: "14"
                     },
                 },
             },
             y: {
                 grid: {
-                    display: false,  // Quita la cuadrícula en el eje Y
+                    display: true,
+                    color: "rgba(255,255,255,0.2)"
                 },
                 title: {
                     display: isLarge,
                     text: 'Palabras por minuto',
-                    color: '#444444',  // Texto negro
+                    color: '#444444',
                     font: {
-                        weight: 'bold',  // Texto en negrita
+                        weight: 'bold',
                         size: "14"
                     },
                 },
                 ticks: {
-                    color: '#444444',  // Texto negro
+                    color: '#444444',
                     font: {
-                        weight: 'bold',  // Números en negrita
+                        weight: 'bold',
                         size: "14"
                     },
                 },
                 beginAtZero: true,
             },
         },
-        borderColor: 'rgba(0, 0, 0, 1)',  // Borde exterior negro
-        borderWidth: 3,  // Grosor del borde
+        interaction: {
+            mode: 'index',  // Tooltip compartido
+            intersect: false,  // Tooltip compartido aunque los puntos no se intersecten
+        },
+        borderColor: 'rgba(0, 0, 0, 1)',
+        borderWidth: 3,
     };
 
     return <Line data={chartData} options={options} />;

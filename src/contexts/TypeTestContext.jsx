@@ -22,6 +22,7 @@ export const TypeTestProvider = ({ children }) => {
     // data
     const [wordList, setWordList] = useState(generateWords());
     const [writtenWords, setWrittenWords] = useState([]);
+    const [timeStamps, setTimeStamps] = useState({});
     const [accuracy, setAccuracy] = useState({ correct: 0, wrong: 0 });
     const [testState, setTestState] = useState(TEST_STATES.NOT_STARTED);
     const [inputText, setInputText] = useState("");
@@ -39,6 +40,27 @@ export const TypeTestProvider = ({ children }) => {
             ];
         }, [0, 0, 0, 0]
     );
+
+    useEffect(() => {
+        const stamp = duration - timeLeft;
+        if (stamp > 0) {
+            const keyStrokes = calcKeyStrokes();
+            const correctKeys = keyStrokes[0];
+            const incorrectKeys = keyStrokes[1];
+
+            const wpmCalc = Math.round((correctKeys / 5) * (60 / (duration - (endTime - Date.now()) / 1000)));
+            const rawCalc = Math.round(((incorrectKeys + correctKeys) / 5) * (60 / (duration - (endTime - Date.now()) / 1000)));
+
+            setTimeStamps(oldStamps => ({
+                ...oldStamps,
+                [stamp]: {
+                    wpm: wpmCalc,
+                    raw: rawCalc,
+                    //errors: accuracy.wrong
+                }
+            }))
+        }
+    }, [timeLeft]);
 
     useEffect(() => {
         if (writtenWords.length > 0) {
@@ -75,6 +97,7 @@ export const TypeTestProvider = ({ children }) => {
 
         setWordList(generateWords());
         setWrittenWords([]);
+        setTimeStamps({});
         setAccuracy({ correct: 0, wrong: 0 });
         setTestState(TEST_STATES.NOT_STARTED);
 
@@ -113,6 +136,8 @@ export const TypeTestProvider = ({ children }) => {
                 setWordList,
                 writtenWords,
                 setWrittenWords,
+                timeStamps,
+                setTimeStamps,
                 accuracy,
                 setAccuracy,
                 testState,
