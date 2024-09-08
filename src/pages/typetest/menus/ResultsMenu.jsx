@@ -7,7 +7,9 @@ import WPMChart from "../components/WPMChart";
 import { useIsLarge } from "../../../hooks/useIsLarge";
 import { useSettings } from "../../../contexts/SettingsContext";
 import { useTypeTest } from "../../../contexts/TypeTestContext";
-import { consistency } from "../../../utils/Utils";
+import { consistency } from "../../../utils/TypeTestUtils";
+
+import Languages from "../../../data/Languages.json";
 
 const ResultsMenu = ({ isOpen, closeMenu }) => {
     const isLarge = useIsLarge();
@@ -70,7 +72,7 @@ const ResultsMenu = ({ isOpen, closeMenu }) => {
 
                     <div className="row d-flex align-items-center justify-content-between">
                         <div className="col-md-2 col-sm-4 col-6">
-                            <DataDisplay name={"Idioma"} data={testLang === "es" ? "Español" : "Inglés"} />
+                            <DataDisplay name={"Idioma"} data={Languages[testLang].long} />
                         </div>
 
                         <div className="col-md-2 col-sm-4 col-6">

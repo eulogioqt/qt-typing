@@ -9,6 +9,8 @@ import { TEST_STATES, useTypeTest } from "../../../contexts/TypeTestContext";
 import { useIsLarge } from "../../../hooks/useIsLarge";
 import { useSettings } from "../../../contexts/SettingsContext";
 
+import Languages from "../../../data/Languages.json";
+
 import "../css/wordsDisplay.css";
 
 const WordsDisplay = ({ openTestSettings }) => {
@@ -35,11 +37,12 @@ const WordsDisplay = ({ openTestSettings }) => {
                     <div className="dropdown me-2">
                         <button className="btn btn-black dropdown-toggle" type="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            {testLang === "es" ? "🇪🇸" : "🇺🇸"}
+                            {Languages[testLang].flag}
                         </button>
                         <ul className="dropdown-menu border border-black rounded-3 black-color">
-                            <li><button className="dropdown-item dropdown-item-black" onClick={() => setTestLang("es")}>🇪🇸</button></li>
-                            <li><button className="dropdown-item dropdown-item-black" onClick={() => setTestLang("en")}>🇺🇸</button></li>
+                            {Object.keys(Languages).map(lang => (
+                                <li><button className="dropdown-item dropdown-item-black" onClick={() => setTestLang(lang)}>{lang.flag}</button></li>
+                            ))}
                         </ul>
                     </div>
 
