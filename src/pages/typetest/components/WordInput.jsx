@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 import { TEST_STATES, useTypeTest } from "../../../contexts/TypeTestContext";
 import { getWordLength } from "../../../utils/Utils";
@@ -8,6 +8,15 @@ const WordInput = () => {
     const { writtenWords, setWrittenWords, inputText, setInputText,
         wordList, testState, onStart, setAccuracy } = useTypeTest();
     const isLarge = useIsLarge();
+
+    const inputRef = useRef(null);
+
+    useEffect(() => {
+        if (inputRef.current) {
+            if (testState === TEST_STATES.FINISHED) inputRef.current.blur();
+            else if (testState === TEST_STATES.NOT_STARTED) inputRef.current.focus();
+        }
+    }, [testState]);
 
     const onInputChange = (e) => {
         const newValue = e.target.value;
@@ -64,6 +73,7 @@ const WordInput = () => {
 
     return (
         <input
+            ref={inputRef}
             className="p-1 rounded-3 w-100 border border-black"
             style={{ fontSize: isLarge ? "1.5rem" : "1.25rem", maxWidth: "500px", height: "2.25em" }}
             value={inputText}
