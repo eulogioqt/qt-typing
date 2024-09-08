@@ -1,7 +1,7 @@
 import React from "react";
 
-import { useTypeTest } from "../../../contexts/TypeTestContext";
-import { useIsLarge } from "../../../hooks/useIsLarge";
+import { useTypeTest } from "../../../../contexts/TypeTestContext";
+import { useIsLarge } from "../../../../hooks/useIsLarge";
 
 import reload from "/src/assets/images/reload.png";
 

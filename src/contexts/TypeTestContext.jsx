@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from "react";
 
 import { useWords } from "../hooks/useWords";
-import { getWordLength } from "../utils/Utils.js";
 import { useSettings } from "./SettingsContext.jsx";
+import { calcKeyStrokes, calcLiveRaw, calcLiveWPM } from "../utils/TypeTestUtils.js";
 
 export const TEST_STATES = {
     NOT_STARTED: 0,
@@ -11,12 +11,16 @@ export const TEST_STATES = {
 }
 
 const TypeTestContext = createContext();
+
 export const TypeTestProvider = ({ children }) => {
     const { testLang, duration } = useSettings();
     const { generateRandomWord, generateWords } = useWords(testLang);
 
+    const [firstRender, setFirstRender] = useState(true);
+
     // timer
     const [timeLeft, setTimeLeft] = useState(undefined); // Necesario para los renderizados
+    const [startTime, setStartTime] = useState(undefined);
     const [endTime, setEndTime] = useState(undefined);
 
     // data
@@ -29,35 +33,19 @@ export const TypeTestProvider = ({ children }) => {
 
     const inputRef = useRef(null);
 
-    const calcKeyStrokes = () => wordList.reduce(
-        ([ck, ik, cw, iw], word, index) => {
-            const isCorrect = writtenWords[index];
-            const wordLength = getWordLength(word) + 1;
-
-            return [
-                ck + (isCorrect ? wordLength : 0),
-                ik + (isCorrect === false ? wordLength : 0),
-                cw + (isCorrect ? 1 : 0),
-                iw + (isCorrect === false ? 1 : 0)
-            ];
-        }, [0, 0, 0, 0]
-    );
-
     useEffect(() => {
         const stamp = duration - timeLeft;
         if (stamp > 0) {
-            const keyStrokes = calcKeyStrokes();
-            const correctKeys = keyStrokes[0];
-            const incorrectKeys = keyStrokes[1];
+            const [correctKeys, incorrectKeys, _] = calcKeyStrokes(wordList, writtenWords);
 
-            const wpmCalc = Math.round((correctKeys / 5) * (60 / (duration - (endTime - Date.now()) / 1000)));
-            const rawCalc = Math.round(((incorrectKeys + correctKeys) / 5) * (60 / (duration - (endTime - Date.now()) / 1000)));
+            const liveWpmCalc = calcLiveWPM(correctKeys, duration, endTime);
+            const liveRawCalc = calcLiveRaw(correctKeys, incorrectKeys, duration, endTime);
 
             setTimeStamps(oldStamps => ({
                 ...oldStamps,
                 [stamp]: {
-                    wpm: wpmCalc,
-                    raw: rawCalc,
+                    wpm: Math.round(liveWpmCalc),
+                    raw: Math.round(liveRawCalc),
                     //errors: accuracy.wrong
                 }
             }))
@@ -78,7 +66,6 @@ export const TypeTestProvider = ({ children }) => {
         setWordList(wordList => [...wordList, generateRandomWord()]);
     }, [writtenWords]);
 
-    const [firstRender, setFirstRender] = useState(true);
     useEffect(() => {
         if (firstRender) setFirstRender(false);
         else onReload();
@@ -112,17 +99,13 @@ export const TypeTestProvider = ({ children }) => {
 
         setInputText("");
 
-        if (inputRef.current)
-            inputRef.current.focus();
+        if (inputRef.current) inputRef.current.focus();
     }
 
     const onFinish = () => {
         setTestState(TEST_STATES.FINISHED);
 
         setInputText("");
-        console.log("Promedio de caracteres por palabra: " + wordList
-            .map((word, index) => writtenWords[index] !== undefined ? getWordLength(word) + 1 : 0)
-            .reduce((acc, cur) => acc + cur) / writtenWords.length);
     };
 
     const onStart = () => {
@@ -131,11 +114,6 @@ export const TypeTestProvider = ({ children }) => {
         setTimeLeft(duration);
         setEndTime(Date.now() + duration * 1000);
     }
-
-    /*const [wpm, setWpm] = useState(0); CON ESTO SE PUEDE HACER UN GRAFICO DE WPM ETC, GUARDAR MARCA Y TIEMPO
-    useEffect(() => {
-        setWpm((keyStrokes[0] / 5) * (60 / (duration - (endTime - Date.now()) / 1000)));
-    }, [writtenWords]);*/
 
     return (
         <TypeTestContext.Provider
@@ -157,7 +135,6 @@ export const TypeTestProvider = ({ children }) => {
                 inputText,
                 setInputText,
                 inputRef,
-                calcKeyStrokes,
 
                 onFinish,
                 onStart,

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useTypeTest } from "../../../contexts/TypeTestContext";
+import { useTypeTest } from "../../../../contexts/TypeTestContext";
 
 const WordItem = ({ word, index }) => {
     const { writtenWords, inputText } = useTypeTest();
