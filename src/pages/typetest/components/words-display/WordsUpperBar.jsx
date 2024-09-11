@@ -34,7 +34,7 @@ const WordsUpperBar = ({ openTestSettings }) => {
                         {Object.keys(Languages).map(lang => (
                             <li key={lang}>
                                 <button className="dropdown-item dropdown-item-black" onClick={() => setTestLang(lang)}>
-                                    {lang.flag}
+                                    {Languages[lang].flag}
                                 </button>
                             </li>
                         ))}
