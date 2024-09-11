@@ -21,7 +21,7 @@ const WordsUpperBar = ({ openTestSettings }) => {
 
             setLWPM(WPM);
         }
-    }, [writtenWords, testState, timeLeft]);
+    }, [writtenWords, testState, timeLeft]);// tuerca
 
     return (
         <div className="col-lg-9 col-12 d-flex justify-content-start align-items-center position-relative mt-3">
