@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useRef } from "r
 
 import { useWords } from "../hooks/useWords";
 import { useSettings } from "./SettingsContext.jsx";
-import { calcKeyStrokes, calcLiveRaw, calcLiveWPM } from "../utils/TypeTestUtils.js";
+import { calcKeyStrokes, calcLiveRaw, calcLiveWPM } from "../utils/TypeTestMetrics.js";
 
 export const TEST_STATES = {
     NOT_STARTED: 0,

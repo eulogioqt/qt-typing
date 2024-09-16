@@ -8,17 +8,20 @@ import DataDisplay from "../components/DataDisplay";
 import { useIsLarge } from "../../../hooks/useIsLarge";
 import { useSettings } from "../../../contexts/SettingsContext";
 import { useTypeTest } from "../../../contexts/TypeTestContext";
-import { calcKeyStrokes, calcRaw, calcWPM, calcConsistency, calcAccuracy } from "../../../utils/TypeTestUtils";
+import { useMenus } from "../../../contexts/MenusContext";
+import { calcKeyStrokes, calcRaw, calcWPM, calcConsistency, calcAccuracy } from "../../../utils/TypeTestMetrics";
 
 import Languages from "../../../data/Languages.json";
 
-const ResultsMenu = ({ isOpen, closeMenu }) => {
+const ResultsMenu = () => {
     const isLarge = useIsLarge();
+    const { openResults, setOpenResults } = useMenus();
+
     const { duration, testLang } = useSettings();
-    const { accuracy, timeStamps, endTime, onReload, wordList, writtenWords } = useTypeTest();
+    const { accuracy, timeStamps, onReload, wordList, writtenWords } = useTypeTest();
     const [correctKeys, incorrectKeys, correctWords, incorrectWords] = calcKeyStrokes(wordList, writtenWords);
 
-    if (!isOpen) return null;
+    if (!openResults) return null;
 
     const wpmCalc = calcWPM(correctKeys, duration);
     const rawCalc = calcRaw(correctKeys, incorrectKeys, duration);
@@ -27,7 +30,7 @@ const ResultsMenu = ({ isOpen, closeMenu }) => {
 
     const onNewTest = () => {
         onReload();
-        closeMenu();
+        setOpenResults(false);
     }
 
     return (
@@ -43,8 +46,17 @@ const ResultsMenu = ({ isOpen, closeMenu }) => {
 
                     <div className="row">
                         <div className="col-md-3 col-lg-2 d-flex flex-column flex-sm-row flex-md-column justify-content-center align-items-center my-3">
-                            <DataDisplay name={"PPM"} data={Math.round(wpmCalc)} big={true} />
-                            <DataDisplay name={"Precisión"} data={Math.round(accuracyCalc) + "%"} big={true} />
+                            <DataDisplay
+                                name={"PPM"}
+                                data={Math.round(wpmCalc)}
+                                tooltip={wpmCalc.toFixed(2) + " PPM"}
+                                big={true} />
+
+                            <DataDisplay
+                                name={"Precisión"}
+                                data={Math.round(accuracyCalc) + "%"}
+                                tooltip={accuracyCalc.toFixed(2) + "%"}
+                                big={true} />
                         </div>
 
                         <div className="col-md-9 col-lg-10 my-3" style={{ height: "300px" }}>
@@ -54,27 +66,45 @@ const ResultsMenu = ({ isOpen, closeMenu }) => {
 
                     <div className="row d-flex align-items-center justify-content-between">
                         <div className="col-md-2 col-sm-4 col-6">
-                            <DataDisplay name={"Idioma"} data={Languages[testLang].long} />
+                            <DataDisplay
+                                name={"Idioma"}
+                                data={Languages[testLang].long} />
                         </div>
 
                         <div className="col-md-2 col-sm-4 col-6">
-                            <DataDisplay name={"Tiempo"} data={duration + "s"} />
+                            <DataDisplay
+                                name={"Tiempo"}
+                                data={duration + "s"} />
                         </div>
 
                         <div className="col-md-2 col-sm-4 col-6">
-                            <DataDisplay name={"Test"} data={accuracyCalc > 80 ? "Valido" : "Invalido"} />
+                            <DataDisplay
+                                name={"Test"}
+                                data={accuracyCalc > 80 ? "Valido" : "Invalido"}
+                                tooltip={accuracyCalc > 80 ? "Más de 80% de precisión" : "Menos de 80% de precisión"}
+                            />
                         </div>
 
                         <div className="col-md-2 col-sm-4 col-6">
-                            <DataDisplay name={"PPM con fallos"} data={Math.round(rawCalc)} />
+                            <DataDisplay
+                                name={"PPM con fallos"}
+                                data={Math.round(rawCalc)}
+                                tooltip={rawCalc.toFixed(2) + " PPM"}
+                            />
                         </div>
 
                         <div className="col-md-2 col-sm-4 col-6">
-                            <DataDisplay name={"Consistencia"} data={Math.round(consistencyCalc) + "%"} />
+                            <DataDisplay
+                                name={"Consistencia"}
+                                data={Math.round(consistencyCalc) + "%"}
+                                tooltip={consistencyCalc.toFixed(2) + "%"} />
                         </div>
 
                         <div className="col-md-2 col-sm-4 col-6">
-                            <DataDisplay name={"Palabras"} data={correctWords + "/" + incorrectWords} />
+                            <DataDisplay
+                                name={"Caracteres"}
+                                data={correctKeys + " / " + incorrectKeys}
+                                tooltip={"correctos / incorrectos"} />
                         </div>
                     </div>
 

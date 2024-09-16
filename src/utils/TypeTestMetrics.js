@@ -4,8 +4,9 @@ import { getWordLength } from "./Utils";
 export const calcConsistency = (list) => {
     const avg = mean(list);
     const stdDev = standardDeviation(list);
-    const consistencyPercentage = (1 - (stdDev / avg)) * 100;
-    return isNaN(consistencyPercentage) ? 0 : consistencyPercentage;
+    const consistency = Math.max(0, Math.min(100, (1 - (stdDev / avg)) * 100));
+
+    return isNaN(consistency) ? 0 : consistency;
 };
 
 export const calcKeyStrokes = (wordList, writtenWords) => wordList.reduce(
