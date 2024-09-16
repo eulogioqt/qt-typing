@@ -6,7 +6,7 @@ export const SettingsProvider = ({ children }) => {
     const [testLang, setTestLang] = useState("es");
 
     const [liveWPM, setLiveWPM] = useState(false);
-    const [duration, setDuration] = useState(60);
+    const [duration, setDuration] = useState(15);
     const [hideTime, setHideTime] = useState(false);
     const [showKeyboard, setShowKeyboard] = useState(false);
 

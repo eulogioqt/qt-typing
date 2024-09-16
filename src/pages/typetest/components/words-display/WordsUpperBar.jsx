@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { useSettings } from "../../../../contexts/SettingsContext";
 import { TEST_STATES, useTypeTest } from "../../../../contexts/TypeTestContext";
-import { calcKeyStrokes, calcLiveWPM, calcWPM } from "../../../../utils/TypeTestUtils";
+import { calcKeyStrokes, calcLiveWPM } from "../../../../utils/TypeTestMetrics";
 
 import Languages from "../../../../data/Languages.json";
 
