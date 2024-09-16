@@ -8,17 +8,20 @@ import DataDisplay from "../components/DataDisplay";
 import { useIsLarge } from "../../../hooks/useIsLarge";
 import { useSettings } from "../../../contexts/SettingsContext";
 import { useTypeTest } from "../../../contexts/TypeTestContext";
+import { useMenus } from "../../../contexts/MenusContext";
 import { calcKeyStrokes, calcRaw, calcWPM, calcConsistency, calcAccuracy } from "../../../utils/TypeTestMetrics";
 
 import Languages from "../../../data/Languages.json";
 
-const ResultsMenu = ({ isOpen, closeMenu }) => {
+const ResultsMenu = () => {
     const isLarge = useIsLarge();
+    const { openResults, setOpenResults } = useMenus();
+
     const { duration, testLang } = useSettings();
     const { accuracy, timeStamps, onReload, wordList, writtenWords } = useTypeTest();
     const [correctKeys, incorrectKeys, correctWords, incorrectWords] = calcKeyStrokes(wordList, writtenWords);
 
-    if (!isOpen) return null;
+    if (!openResults) return null;
 
     const wpmCalc = calcWPM(correctKeys, duration);
     const rawCalc = calcRaw(correctKeys, incorrectKeys, duration);
@@ -27,7 +30,7 @@ const ResultsMenu = ({ isOpen, closeMenu }) => {
 
     const onNewTest = () => {
         onReload();
-        closeMenu();
+        setOpenResults(false);
     }
 
     return (

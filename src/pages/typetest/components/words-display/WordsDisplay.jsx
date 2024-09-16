@@ -11,13 +11,13 @@ import { useIsLarge } from "../../../../hooks/useIsLarge";
 
 import "../../css/wordsDisplay.css";
 
-const WordsDisplay = ({ openTestSettings }) => {
+const WordsDisplay = () => {
     const { testState, wordList } = useTypeTest();
     const isLarge = useIsLarge();
 
     return (
         <>
-            <WordsUpperBar openTestSettings={openTestSettings} />
+            <WordsUpperBar />
 
             <div className="d-flex justify-content-center align-items-center position-relative mt-2">
                 <div className="p-2 col-lg-9 col-12 test-container rounded-3">

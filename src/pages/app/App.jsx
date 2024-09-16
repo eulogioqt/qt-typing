@@ -2,6 +2,7 @@ import React from "react";
 
 import { TypeTestProvider } from "../../contexts/TypeTestContext";
 import { SettingsProvider } from "../../contexts/SettingsContext";
+import { MenusProvider } from "../../contexts/MenusContext";
 
 import TypeTestPage from "../typetest/TypeTestPage";
 
@@ -11,7 +12,9 @@ const App = () => {
     return (
         <SettingsProvider>
             <TypeTestProvider>
-                <TypeTestPage />
+                <MenusProvider>
+                    <TypeTestPage />
+                </MenusProvider>
             </TypeTestProvider>
         </SettingsProvider>
     );

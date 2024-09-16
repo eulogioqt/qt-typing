@@ -4,14 +4,16 @@ import WhiteScrollMenu from "../../app/components/WhiteScrollMenu";
 import SettingDisplay from "../../app/components/SettingDisplay";
 
 import { useSettings } from "../../../contexts/SettingsContext";
+import { useMenus } from "../../../contexts/MenusContext";
 
-const TestSettingsMenu = ({ isOpen, closeMenu }) => {
+const TestSettingsMenu = () => {
     const { liveWPM, setLiveWPM, duration, setDuration, hideTime, setHideTime, showKeyboard, setShowKeyboard } = useSettings();
+    const { openTestSettings, setOpenTestSettings } = useMenus();
 
-    if (!isOpen) return null;
+    if (!openTestSettings) return null;
 
     return (
-        <WhiteScrollMenu title={"Ajustes"} closeMenu={closeMenu} orderInLayer={1}>
+        <WhiteScrollMenu title={"Ajustes"} closeMenu={() => setOpenTestSettings(false)} orderInLayer={1}>
 
             <SettingDisplay
                 settingName={"Tiempo de test"}

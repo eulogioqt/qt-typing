@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 
 import { useSettings } from "../../../../contexts/SettingsContext";
+import { useMenus } from "../../../../contexts/MenusContext";
 import { TEST_STATES, useTypeTest } from "../../../../contexts/TypeTestContext";
 import { calcKeyStrokes, calcLiveWPM } from "../../../../utils/TypeTestMetrics";
 
 import Languages from "../../../../data/Languages.json";
 
-const WordsUpperBar = ({ openTestSettings }) => {
+const WordsUpperBar = () => {
     const { testLang, setTestLang, liveWPM, duration } = useSettings();
     const { endTime, timeLeft, testState, wordList, writtenWords } = useTypeTest();
+    const { setOpenTestSettings } = useMenus();
 
     const [lWPM, setLWPM] = useState(0);
 
@@ -41,7 +43,8 @@ const WordsUpperBar = ({ openTestSettings }) => {
                     </ul>
                 </div>
 
-                <div className={"btn btn-black" + (testState !== TEST_STATES.NOT_STARTED ? " disabled" : "")} onClick={openTestSettings}>
+                <div className={"btn btn-black" + (testState !== TEST_STATES.NOT_STARTED ? " disabled" : "")}
+                    onClick={() => setOpenTestSettings(true)}>
                     Ajustes
                 </div>
             </div>
