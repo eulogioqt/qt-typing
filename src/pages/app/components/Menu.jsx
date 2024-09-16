@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-const Menu = ({ orderInLayer, bgColor = "", children }) => {
+const Menu = ({ orderInLayer, bgColor = "", closeMenu, children }) => {
 
     useEffect(() => {
         document.body.style.overflow = "hidden";
@@ -10,8 +10,9 @@ const Menu = ({ orderInLayer, bgColor = "", children }) => {
     }, []);
 
     return (
-        <div className={'d-flex align-items-center justify-content-center position-fixed w-100 h-100 ' + bgColor}
-            style={{ backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: orderInLayer * 100, overflowY: 'auto' }}>
+        <div className={'d-flex align-items-start justify-content-center position-fixed w-100 h-100 ' + bgColor}
+            style={{ backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: orderInLayer * 100, overflowY: 'auto', overflowX: "hidden" }}
+            onClick={closeMenu}>
             {children}
         </div>
     );

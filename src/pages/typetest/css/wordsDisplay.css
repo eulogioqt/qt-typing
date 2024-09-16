@@ -34,3 +34,8 @@
 .bg-red {
     background-color: rgb(255, 164, 164);
 }
+
+.results-tooltip {
+    --bs-tooltip-bg: #444444;
+    --bs-tooltip-color: white;
+}

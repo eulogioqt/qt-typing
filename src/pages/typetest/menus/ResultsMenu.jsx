@@ -15,7 +15,7 @@ import Languages from "../../../data/Languages.json";
 const ResultsMenu = ({ isOpen, closeMenu }) => {
     const isLarge = useIsLarge();
     const { duration, testLang } = useSettings();
-    const { accuracy, timeStamps, endTime, onReload, wordList, writtenWords } = useTypeTest();
+    const { accuracy, timeStamps, onReload, wordList, writtenWords } = useTypeTest();
     const [correctKeys, incorrectKeys, correctWords, incorrectWords] = calcKeyStrokes(wordList, writtenWords);
 
     if (!isOpen) return null;
@@ -99,9 +99,9 @@ const ResultsMenu = ({ isOpen, closeMenu }) => {
 
                         <div className="col-md-2 col-sm-4 col-6">
                             <DataDisplay
-                                name={"Palabras"}
-                                data={correctWords + " / " + incorrectWords}
-                                tooltip={"correctas / incorrectas"} />
+                                name={"Caracteres"}
+                                data={correctKeys + " / " + incorrectKeys}
+                                tooltip={"correctos / incorrectos"} />
                         </div>
                     </div>
 

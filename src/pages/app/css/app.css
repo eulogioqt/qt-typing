@@ -64,3 +64,12 @@ html {
 .dropdown-item-black.active {
     background-color: #333333 !important;
 }
+
+.dropdown-menu {
+    width: auto !important;
+    min-width: auto !important;
+}
+
+.dropdown-toggle {
+    min-width: 60px;
+}

@@ -10,39 +10,24 @@ const TestSettingsMenu = ({ isOpen, closeMenu }) => {
 
     if (!isOpen) return null;
 
-    const handleDurationInputChange = (e) => {
-        const value = e.target.value;
-
-        if (value.length <= 2)
-            setDuration(value);
-    };
-
-    const handleDurationInputBlur = () => {
-        let actualValue = parseInt(duration, 10);
-
-        if (isNaN(actualValue) || actualValue < 5) actualValue = 5;
-        else if (actualValue > 60) actualValue = 60;
-
-        setDuration(actualValue);
-    };
-
     return (
         <WhiteScrollMenu title={"Ajustes"} closeMenu={closeMenu} orderInLayer={1}>
 
             <SettingDisplay
                 settingName={"Tiempo de test"}
                 input={
-                    <div className="form-check form-switch ps-0">
-                        <input
-                            className="form-control"
-                            type="number"
+                    <div className="dropdown me-2">
+                        <select
+                            className="form-select form-select-black border border-black"
                             value={duration}
-                            onChange={handleDurationInputChange}
-                            onBlur={handleDurationInputBlur}
-                            min="5"
-                            max="60"
-                            style={{ width: "80px" }}
-                        />
+                            onChange={(e) => setDuration(Number(e.target.value))}
+                        >
+                            {[60, 30, 15].map((time) => (
+                                <option key={time} value={time}>
+                                    {time}s
+                                </option>
+                            ))}
+                        </select>
                     </div>
                 }
             />
