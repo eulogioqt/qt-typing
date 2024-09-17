@@ -12,16 +12,17 @@ import { useMenus } from "../../../contexts/MenusContext";
 import { calcKeyStrokes, calcRaw, calcWPM, calcConsistency, calcAccuracy } from "../../../utils/TypeTestMetrics";
 
 import Languages from "../../../data/Languages.json";
+import Header from "../../app/components/Header";
 
 const ResultsMenu = () => {
     const isLarge = useIsLarge();
-    const { openResults, setOpenResults } = useMenus();
+    const { testResultsMenu, closeTestResultsMenu } = useMenus();
 
     const { duration, testLang } = useSettings();
     const { accuracy, timeStamps, onReload, wordList, writtenWords } = useTypeTest();
     const [correctKeys, incorrectKeys, correctWords, incorrectWords] = calcKeyStrokes(wordList, writtenWords);
 
-    if (!openResults) return null;
+    if (!testResultsMenu) return null;
 
     const wpmCalc = calcWPM(correctKeys, duration);
     const rawCalc = calcRaw(correctKeys, incorrectKeys, duration);
@@ -30,19 +31,14 @@ const ResultsMenu = () => {
 
     const onNewTest = () => {
         onReload();
-        setOpenResults(false);
+        closeTestResultsMenu();
     }
 
     return (
         <Menu orderInLayer={1} bgColor="bg-main">
             <div className="d-flex flex-column w-100 h-100">
                 <div className="container">
-                    <h1 className="text-center fw-bold white-shadow-text mt-3" style={{ fontSize: isLarge ? "4rem" : "2.5rem" }}>
-                        QT Typing
-                    </h1>
-                    <h2 className="text-center mt-3 white-shadow-text" style={{ fontSize: isLarge ? "2rem" : "1.5rem" }}>
-                        Resultados
-                    </h2>
+                    <Header />
 
                     <div className="row">
                         <div className="col-md-3 col-lg-2 d-flex flex-column flex-sm-row flex-md-column justify-content-center align-items-center my-3">

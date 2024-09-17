@@ -8,19 +8,19 @@ import { useMenus } from "../../../contexts/MenusContext";
 
 const TestSettingsMenu = () => {
     const { liveWPM, setLiveWPM, duration, setDuration, hideTime, setHideTime, showKeyboard, setShowKeyboard } = useSettings();
-    const { openTestSettings, setOpenTestSettings } = useMenus();
+    const { testSettingsMenu, closeTestSettingsMenu } = useMenus();
 
-    if (!openTestSettings) return null;
+    if (!testSettingsMenu) return null;
 
     return (
-        <WhiteScrollMenu title={"Ajustes"} closeMenu={() => setOpenTestSettings(false)} orderInLayer={1}>
+        <WhiteScrollMenu title={"Ajustes"} closeMenu={closeTestSettingsMenu} orderInLayer={1}>
 
             <SettingDisplay
                 settingName={"Tiempo de test"}
                 input={
                     <div className="dropdown me-2">
                         <select
-                            className="form-select form-select-black border border-black"
+                            className="form-select"
                             value={duration}
                             onChange={(e) => setDuration(Number(e.target.value))}
                         >

@@ -10,7 +10,7 @@ import Languages from "../../../../data/Languages.json";
 const WordsUpperBar = () => {
     const { testLang, setTestLang, liveWPM, duration } = useSettings();
     const { endTime, timeLeft, testState, wordList, writtenWords } = useTypeTest();
-    const { setOpenTestSettings } = useMenus();
+    const { openTestSettingsMenu } = useMenus();
 
     const [lWPM, setLWPM] = useState(0);
 
@@ -44,7 +44,7 @@ const WordsUpperBar = () => {
                 </div>
 
                 <div className={"btn btn-black" + (testState !== TEST_STATES.NOT_STARTED ? " disabled" : "")}
-                    onClick={() => setOpenTestSettings(true)}>
+                    onClick={openTestSettingsMenu}>
                     Ajustes
                 </div>
             </div>

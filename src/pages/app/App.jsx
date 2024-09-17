@@ -11,11 +11,11 @@ import "./css/app.css";
 const App = () => {
     return (
         <SettingsProvider>
-            <TypeTestProvider>
-                <MenusProvider>
+            <MenusProvider>
+                <TypeTestProvider>
                     <TypeTestPage />
-                </MenusProvider>
-            </TypeTestProvider>
+                </TypeTestProvider>
+            </MenusProvider>
         </SettingsProvider>
     );
 }
