@@ -9,6 +9,8 @@ export const MenusProvider = ({ children }) => {
     const [openTestSettings, setOpenTestSettings] = useState(false);
     const [openResults, setOpenResults] = useState(false);
 
+    const isMenuOpen = () => openTestSettings || openResults;
+
     useEffect(() => {
         setOpenResults(testState === TEST_STATES.FINISHED);
     }, [testState]);
@@ -19,7 +21,8 @@ export const MenusProvider = ({ children }) => {
                 openTestSettings,
                 setOpenTestSettings,
                 openResults,
-                setOpenResults
+                setOpenResults,
+                isMenuOpen
             }}
         >
             {children}

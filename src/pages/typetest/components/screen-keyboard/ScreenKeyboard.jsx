@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { useSettings } from "../../../../contexts/SettingsContext";
+import { useMenus } from "../../../../contexts/MenusContext";
 
 import KeyCap from "./KeyCap";
 
@@ -14,6 +15,7 @@ const letters = [
 
 const ScreenKeyboard = () => {
     const { showKeyboard } = useSettings();
+    const { isMenuOpen } = useMenus();
 
     const [pressedKeys, setPressedKeys] = useState({});
 
@@ -56,14 +58,18 @@ const ScreenKeyboard = () => {
     };
 
     useEffect(() => {
-        window.addEventListener("keydown", handleKeyDown);
-        window.addEventListener("keyup", handleKeyUp);
+        setPressedKeys({}); // Para reiniciar las teclas y no se queden pilladas al abrir menu
+
+        if (!isMenuOpen()) {
+            window.addEventListener("keydown", handleKeyDown);
+            window.addEventListener("keyup", handleKeyUp);
+        }
 
         return () => {
             window.removeEventListener("keydown", handleKeyDown);
             window.removeEventListener("keyup", handleKeyUp);
         };
-    }, []);
+    }, [isMenuOpen()]);
 
     if (!showKeyboard) return null;
 
