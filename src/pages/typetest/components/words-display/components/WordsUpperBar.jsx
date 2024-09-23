@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-import { useSettings } from "../../../../contexts/SettingsContext";
-import { useMenus } from "../../../../contexts/MenusContext";
-import { TEST_STATES, useTypeTest } from "../../../../contexts/TypeTestContext";
-import { calcKeyStrokes, calcLiveWPM } from "../../../../utils/TypeTestMetrics";
+import { useSettings } from "../../../../../contexts/SettingsContext";
+import { useMenus } from "../../../../../contexts/MenusContext";
+import { TEST_STATES, useTypeTest } from "../../../../../contexts/TypeTestContext";
+import { calcKeyStrokes, calcLiveWPM } from "../../../../../utils/TypeTestMetrics";
 
-import Languages from "../../../../data/Languages.json";
+import Languages from "../../../../../data/Languages.json";
 
 const WordsUpperBar = () => {
     const { testLang, setTestLang, liveWPM, duration } = useSettings();

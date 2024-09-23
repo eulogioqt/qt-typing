@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Line } from 'react-chartjs-2';
 
-import { useIsLarge } from '../../../hooks/useIsLarge';
+import { useIsLarge } from '../../../../../hooks/useIsLarge';
 
 import {
     Chart as ChartJS,

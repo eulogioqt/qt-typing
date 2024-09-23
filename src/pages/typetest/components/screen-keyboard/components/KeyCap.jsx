@@ -1,9 +1,9 @@
-import TabSymbol from "./key-designs/TabSymbol";
-import CapsLockLight from "./key-designs/CapsLockLight";
-import ThreeDisplay from "./key-designs/ThreeDisplay";
-import SingleDisplay from "./key-designs/SingleDisplay";
+import TabSymbol from "../key-designs/TabSymbol";
+import CapsLockLight from "../key-designs/CapsLockLight";
+import ThreeDisplay from "../key-designs/ThreeDisplay";
+import SingleDisplay from "../key-designs/SingleDisplay";
 
-import { useKeyboard } from "./context/KeyboardContext";
+import { useKeyboard } from "../context/KeyboardContext";
 
 const LETTER_DISPLAY = {
     "BACKQUOTE": <ThreeDisplay topLeft="ª" bottomLeft="º" bottomRight="\" />,

@@ -2,8 +2,8 @@ import React from "react";
 
 import ResultItem from "./ResultItem";
 
-import { TEST_STATES, useTypeTest } from "../../../contexts/TypeTestContext";
-import { useSettings } from "../../../contexts/SettingsContext";
+import { TEST_STATES, useTypeTest } from "../../../../../../contexts/TypeTestContext";
+import { useSettings } from "../../../../../../contexts/SettingsContext";
 
 const ResultSummary = () => {
     const { duration } = useSettings();

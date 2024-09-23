@@ -1,10 +1,10 @@
 import React from "react";
 
-import WhiteScrollMenu from "../../app/components/WhiteScrollMenu";
-import SettingDisplay from "../../app/components/SettingDisplay";
+import WhiteScrollMenu from "../../../app/components/WhiteScrollMenu";
+import SettingDisplay from "../../../app/components/SettingDisplay";
 
-import { useSettings } from "../../../contexts/SettingsContext";
-import { useMenus } from "../../../contexts/MenusContext";
+import { useSettings } from "../../../../contexts/SettingsContext";
+import { useMenus } from "../../../../contexts/MenusContext";
 
 const TestSettingsMenu = () => {
     const { liveWPM, setLiveWPM, duration, setDuration, hideTime, setHideTime, showKeyboard, setShowKeyboard } = useSettings();

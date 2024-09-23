@@ -1,20 +1,21 @@
 import React from "react";
 
 import reload from "/src/assets/images/reload.png";
-import Menu from "../../app/components/Menu";
-import WPMChart from "../components/WPMChart";
-import DataDisplay from "../components/DataDisplay";
 
-import { useIsLarge } from "../../../hooks/useIsLarge";
-import { useSettings } from "../../../contexts/SettingsContext";
-import { useTypeTest } from "../../../contexts/TypeTestContext";
-import { useMenus } from "../../../contexts/MenusContext";
-import { calcKeyStrokes, calcRaw, calcWPM, calcConsistency, calcAccuracy } from "../../../utils/TypeTestMetrics";
+import Menu from "../../../app/components/Menu";
+import WPMChart from "./components/WPMChart";
+import DataDisplay from "./components/DataDisplay";
 
-import Languages from "../../../data/Languages.json";
-import Header from "../../app/components/Header";
+import { useIsLarge } from "../../../../hooks/useIsLarge";
+import { useSettings } from "../../../../contexts/SettingsContext";
+import { useTypeTest } from "../../../../contexts/TypeTestContext";
+import { useMenus } from "../../../../contexts/MenusContext";
+import { calcKeyStrokes, calcRaw, calcWPM, calcConsistency, calcAccuracy } from "../../../../utils/TypeTestMetrics";
 
-const ResultsMenu = () => {
+import Languages from "../../../../data/Languages.json";
+import Header from "../../../app/components/Header";
+
+const TestResultsMenu = () => {
     const isLarge = useIsLarge();
     const { testResultsMenu, closeTestResultsMenu } = useMenus();
 
@@ -106,10 +107,14 @@ const ResultsMenu = () => {
 
 
                     <div className="d-flex align-items-center justify-content-center my-4">
-                        <button className="d-flex align-items-center justify-content-center btn btn-black" onClick={onNewTest}>
+                        <button className="d-flex align-items-center justify-content-center btn btn-black me-2" onClick={onNewTest}>
                             <span className="me-2">Nuevo test</span>
                             <img src={reload} style={{ height: isLarge ? "1.5rem" : "1.4rem" }} />
                         </button>
+
+                        {/*<button className="d-flex align-items-center justify-content-center btn btn-black" onClick={() => alert("No implementado")}>
+                            Obtener título
+                        </button>*/}
                     </div>
                 </div>
             </div>
@@ -117,4 +122,4 @@ const ResultsMenu = () => {
     );
 }
 
-export default ResultsMenu;
+export default TestResultsMenu;

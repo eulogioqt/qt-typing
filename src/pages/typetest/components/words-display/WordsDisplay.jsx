@@ -1,15 +1,15 @@
 import React from "react";
 
-import WordItem from './WordItem';
-import CountdownTimer from "./CountdownTimer";
-import ReloadButton from "./ReloadButton";
-import WordInput from "./WordInput";
-import WordsUpperBar from "./WordsUpperBar";
+import WordItem from './components/WordItem';
+import CountdownTimer from "./components/CountdownTimer";
+import ReloadButton from "./components/ReloadButton";
+import WordInput from "./components/WordInput";
+import WordsUpperBar from "./components/WordsUpperBar";
 
 import { TEST_STATES, useTypeTest } from "../../../../contexts/TypeTestContext";
 import { useIsLarge } from "../../../../hooks/useIsLarge";
 
-import "../../css/wordsDisplay.css";
+import "./css/wordsDisplay.css";
 
 const WordsDisplay = () => {
     const { testState, wordList } = useTypeTest();
