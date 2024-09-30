@@ -77,7 +77,7 @@ const TestResultsMenu = () => {
                         <div className="col-md-2 col-sm-4 col-6">
                             <DataDisplay
                                 name={"Test"}
-                                data={accuracyCalc > 80 ? "Valido" : "Invalido"}
+                                data={accuracyCalc > 80 ? "Válido" : "Inválido"}
                                 tooltip={accuracyCalc > 80 ? "Más de 80% de precisión" : "Menos de 80% de precisión"}
                             />
                         </div>
@@ -99,8 +99,8 @@ const TestResultsMenu = () => {
 
                         <div className="col-md-2 col-sm-4 col-6">
                             <DataDisplay
-                                name={"Caracteres"}
-                                data={correctKeys + " / " + incorrectKeys}
+                                name={"Pulsaciones"}
+                                data={correctKeys + "/" + incorrectKeys}
                                 tooltip={"correctos / incorrectos"} />
                         </div>
                     </div>

@@ -17,7 +17,7 @@ const TypeTestContext = createContext();
 export const TypeTestProvider = ({ children }) => {
     const { testLang, duration } = useSettings();
     const { generateRandomWord, generateWords } = useWords(testLang);
-    const { openTestResultsMenu } = useMenus();
+    const { openTestResultsMenu, closeAllMenus } = useMenus();
 
     const [firstRender, setFirstRender] = useState(true);
 
@@ -75,6 +75,7 @@ export const TypeTestProvider = ({ children }) => {
         const reloadF5 = (event) => {
             if (event.key === 'F5') {
                 event.preventDefault();
+
                 onReload();
             }
         }
@@ -100,6 +101,8 @@ export const TypeTestProvider = ({ children }) => {
         setTestState(TEST_STATES.NOT_STARTED);
 
         setInputText("");
+
+        closeAllMenus();
 
         if (inputRef.current) inputRef.current.focus();
     }
