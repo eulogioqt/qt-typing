@@ -1,27 +1,29 @@
 import React from "react";
 
 import reload from "/src/assets/images/reload.png";
-import Menu from "../../app/components/Menu";
-import WPMChart from "../components/WPMChart";
-import DataDisplay from "../components/DataDisplay";
 
-import { useIsLarge } from "../../../hooks/useIsLarge";
-import { useSettings } from "../../../contexts/SettingsContext";
-import { useTypeTest } from "../../../contexts/TypeTestContext";
-import { useMenus } from "../../../contexts/MenusContext";
-import { calcKeyStrokes, calcRaw, calcWPM, calcConsistency, calcAccuracy } from "../../../utils/TypeTestMetrics";
+import Menu from "../../../app/components/Menu";
+import WPMChart from "./components/WPMChart";
+import DataDisplay from "./components/DataDisplay";
 
-import Languages from "../../../data/Languages.json";
+import { useIsLarge } from "../../../../hooks/useIsLarge";
+import { useSettings } from "../../../../contexts/SettingsContext";
+import { useTypeTest } from "../../../../contexts/TypeTestContext";
+import { useMenus } from "../../../../contexts/MenusContext";
+import { calcKeyStrokes, calcRaw, calcWPM, calcConsistency, calcAccuracy } from "../../../../utils/TypeTestMetrics";
 
-const ResultsMenu = () => {
+import Languages from "../../../../data/Languages.json";
+import Header from "../../../app/components/Header";
+
+const TestResultsMenu = () => {
     const isLarge = useIsLarge();
-    const { openResults, setOpenResults } = useMenus();
+    const { testResultsMenu, closeTestResultsMenu } = useMenus();
 
     const { duration, testLang } = useSettings();
     const { accuracy, timeStamps, onReload, wordList, writtenWords } = useTypeTest();
     const [correctKeys, incorrectKeys, correctWords, incorrectWords] = calcKeyStrokes(wordList, writtenWords);
 
-    if (!openResults) return null;
+    if (!testResultsMenu) return null;
 
     const wpmCalc = calcWPM(correctKeys, duration);
     const rawCalc = calcRaw(correctKeys, incorrectKeys, duration);
@@ -30,19 +32,14 @@ const ResultsMenu = () => {
 
     const onNewTest = () => {
         onReload();
-        setOpenResults(false);
+        closeTestResultsMenu();
     }
 
     return (
         <Menu orderInLayer={1} bgColor="bg-main">
             <div className="d-flex flex-column w-100 h-100">
                 <div className="container">
-                    <h1 className="text-center fw-bold white-shadow-text mt-3" style={{ fontSize: isLarge ? "4rem" : "2.5rem" }}>
-                        QT Typing
-                    </h1>
-                    <h2 className="text-center mt-3 white-shadow-text" style={{ fontSize: isLarge ? "2rem" : "1.5rem" }}>
-                        Resultados
-                    </h2>
+                    <Header />
 
                     <div className="row">
                         <div className="col-md-3 col-lg-2 d-flex flex-column flex-sm-row flex-md-column justify-content-center align-items-center my-3">
@@ -80,7 +77,7 @@ const ResultsMenu = () => {
                         <div className="col-md-2 col-sm-4 col-6">
                             <DataDisplay
                                 name={"Test"}
-                                data={accuracyCalc > 80 ? "Valido" : "Invalido"}
+                                data={accuracyCalc > 80 ? "Válido" : "Inválido"}
                                 tooltip={accuracyCalc > 80 ? "Más de 80% de precisión" : "Menos de 80% de precisión"}
                             />
                         </div>
@@ -102,18 +99,22 @@ const ResultsMenu = () => {
 
                         <div className="col-md-2 col-sm-4 col-6">
                             <DataDisplay
-                                name={"Caracteres"}
-                                data={correctKeys + " / " + incorrectKeys}
+                                name={"Pulsaciones"}
+                                data={correctKeys + "/" + incorrectKeys}
                                 tooltip={"correctos / incorrectos"} />
                         </div>
                     </div>
 
 
                     <div className="d-flex align-items-center justify-content-center my-4">
-                        <button className="d-flex align-items-center justify-content-center btn btn-black" onClick={onNewTest}>
+                        <button className="d-flex align-items-center justify-content-center btn btn-black me-2" onClick={onNewTest}>
                             <span className="me-2">Nuevo test</span>
                             <img src={reload} style={{ height: isLarge ? "1.5rem" : "1.4rem" }} />
                         </button>
+
+                        {/*<button className="d-flex align-items-center justify-content-center btn btn-black" onClick={() => alert("No implementado")}>
+                            Obtener título
+                        </button>*/}
                     </div>
                 </div>
             </div>
@@ -121,4 +122,4 @@ const ResultsMenu = () => {
     );
 }
 
-export default ResultsMenu;
+export default TestResultsMenu;

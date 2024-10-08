@@ -1,8 +1,10 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from "react";
 
+import { calcKeyStrokes, calcLiveRaw, calcLiveWPM } from "../utils/TypeTestMetrics.js";
+
 import { useWords } from "../hooks/useWords";
 import { useSettings } from "./SettingsContext.jsx";
-import { calcKeyStrokes, calcLiveRaw, calcLiveWPM } from "../utils/TypeTestMetrics.js";
+import { useMenus } from "./MenusContext.jsx";
 
 export const TEST_STATES = {
     NOT_STARTED: 0,
@@ -15,12 +17,12 @@ const TypeTestContext = createContext();
 export const TypeTestProvider = ({ children }) => {
     const { testLang, duration } = useSettings();
     const { generateRandomWord, generateWords } = useWords(testLang);
+    const { openTestResultsMenu, closeAllMenus } = useMenus();
 
     const [firstRender, setFirstRender] = useState(true);
 
     // timer
     const [timeLeft, setTimeLeft] = useState(undefined); // Necesario para los renderizados
-    const [startTime, setStartTime] = useState(undefined);
     const [endTime, setEndTime] = useState(undefined);
 
     // data
@@ -73,6 +75,7 @@ export const TypeTestProvider = ({ children }) => {
         const reloadF5 = (event) => {
             if (event.key === 'F5') {
                 event.preventDefault();
+
                 onReload();
             }
         }
@@ -99,11 +102,14 @@ export const TypeTestProvider = ({ children }) => {
 
         setInputText("");
 
+        closeAllMenus();
+
         if (inputRef.current) inputRef.current.focus();
     }
 
     const onFinish = () => {
         setTestState(TEST_STATES.FINISHED);
+        openTestResultsMenu();
 
         setInputText("");
     };

@@ -1,8 +1,8 @@
 import React from "react";
 
-import { TEST_STATES, useTypeTest } from "../../../../contexts/TypeTestContext";
-import { getWordLength } from "../../../../utils/Utils";
-import { useIsLarge } from '../../../../hooks/useIsLarge';
+import { TEST_STATES, useTypeTest } from "../../../../../contexts/TypeTestContext";
+import { getWordLength } from "../../../../../utils/Utils";
+import { useIsLarge } from '../../../../../hooks/useIsLarge';
 
 const WordInput = () => {
     const { writtenWords, setWrittenWords, inputText, setInputText, inputRef,

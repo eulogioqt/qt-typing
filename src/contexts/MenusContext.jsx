@@ -1,25 +1,41 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
-import { TEST_STATES, useTypeTest } from "./TypeTestContext";
+import React, { createContext, useContext, useState } from "react";
 
 const MenusContext = createContext();
 
+export const MENUS = {
+    TEST_SETTINGS: "TEST_SETTINGS_MENU",
+    TEST_RESULTS: "TEST_RESULTS_MENU"
+}
+
 export const MenusProvider = ({ children }) => {
-    const { testState } = useTypeTest();
+    const [testSettingsMenu, setTestSettingsMenu] = useState(false);
+    const openTestSettingsMenu = () => setTestSettingsMenu(true);
+    const closeTestSettingsMenu = () => setTestSettingsMenu(false);
 
-    const [openTestSettings, setOpenTestSettings] = useState(false);
-    const [openResults, setOpenResults] = useState(false);
+    const [testResultsMenu, setTestResultsMenu] = useState(false);
+    const openTestResultsMenu = () => setTestResultsMenu(true);
+    const closeTestResultsMenu = () => setTestResultsMenu(false);
 
-    useEffect(() => {
-        setOpenResults(testState === TEST_STATES.FINISHED);
-    }, [testState]);
+    const isMenuOpen = () => testSettingsMenu || testResultsMenu;
+    const getOpenMenu = () => testSettingsMenu ? MENUS.TEST_SETTINGS : (testResultsMenu ? MENUS.TEST_RESULTS : undefined);
+    const closeAllMenus = () => {
+        closeTestSettingsMenu();
+        closeTestResultsMenu();
+    }
 
     return (
         <MenusContext.Provider
             value={{
-                openTestSettings,
-                setOpenTestSettings,
-                openResults,
-                setOpenResults
+                testSettingsMenu,
+                openTestSettingsMenu,
+                closeTestSettingsMenu,
+                testResultsMenu,
+                openTestResultsMenu,
+                closeTestResultsMenu,
+
+                isMenuOpen,
+                getOpenMenu,
+                closeAllMenus
             }}
         >
             {children}
